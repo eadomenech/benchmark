@@ -1,0 +1,8 @@
+{% extends 'watermarking/watermarking_base.html'%}
+
+{% block contenido %}
+    <h1>{{  watermarkimage.uuid }}</h1>
+    <ul>
+        <li>{{ watermarkimage.uploaded_at }}</li>
+    </ul>
+{% endblock contenido %}

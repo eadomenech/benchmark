@@ -1,0 +1,28 @@
+{% load static%}
+
+<ul class="nav nav-list">
+
+    <!-- MÓDULO WATERMARKING -->
+    {% if modulo == 'watermarking' %} <li class="active hover">{% else %} <li class="hover"> {% endif %}
+        <a href="{% url 'watermarking:index' %}">
+            <i class="menu-icon fa ">
+               <img src="{% static "core/icons/images.jpeg" %}" height=30 width=30/>
+            </i>
+            <span class="menu-text"> Watermarking </span>
+        </a>
+
+        <b class="arrow"></b>
+    </li>
+    <!-- /MÓDULO WATERMARKING -->
+
+    <!-- MÓDULO DE ADMINISTRACIÓN -->
+    {% if modulo == 'administracion' %} <li class="active hover"> {% else %} <li class="hover">	{% endif %}
+        <!--<a href="#">
+            <i class="menu-icon fa fa-cog"></i>
+            <span class="menu-text"> Administraci&oacute;n </span>
+        </a>
+
+        <b class="arrow"></b>-->
+    </li>
+    <!-- /MÓDULO DE ADMINISTRACIÓN -->
+</ul>

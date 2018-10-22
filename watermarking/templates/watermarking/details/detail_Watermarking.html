@@ -1,0 +1,9 @@
+{% extends 'watermarking/watermarking_base.html'%}
+
+{% block contenido %}
+    <h1>{{ watermarking.name }}</h1>
+    <ul>
+        <li>{{ watermarking.created_at }}</li>
+        <li>{{ watermarking.uploaded_at }}</li>
+    </ul>
+{% endblock contenido %}

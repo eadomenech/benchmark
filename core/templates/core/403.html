@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Objeto no encontrado{% endblock titulo %}
+
+{% block header %}
+   
+{% endblock header %}
+    
+{% block contenido %}
+
+<div class="error-container">
+	<div class="well">
+		<h1 class="grey lighter smaller">
+			<span class="black bigger-125">
+			<i class="ace-icon fa fa-lock bigger-230"></i>
+				Lo sentimos, no tiene permisos para realizar esta acci&oacute;n.
+			</span>											
+		</h1>
+
+		<hr />
+		
+		<div>											
+			<div class="space"></div>
+			<h4 class="smaller">P&oacute;ngase en contacto con el administrador del sitio para m&aacute;s detalles</h4>
+		</div>
+
+		<hr />
+
+		<div class="space"></div>
+
+		<div class="center">
+			<a href="javascript:history.back()" class="btn btn-grey">
+				<i class="ace-icon fa fa-arrow-left"></i>
+				Regresar
+			</a>											
+		</div>
+	</div>
+</div>
+{%endblock contenido%}					

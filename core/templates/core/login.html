@@ -1,0 +1,26 @@
+<div style="margin-top: 5px; text-align: center">
+<form id="login_form" method="post" action="{% url 'core:login' %}?next={{ request.path }}" class="width-100">{% csrf_token %}
+    <span class="input-icon align-bottom" style="margin-right: 5px;line-height: 1.2">
+        <input type="text" name="username" placeholder="User" size="12"  style="font-size: 13px;" />
+        <i class="ace-icon fa fa-user" style="top: 0"></i>
+    </span>
+
+    <span class="input-icon align-bottom" style="margin-right: 5px;line-height: 1.2">
+        <input type="password" name="password"  placeholder="Password" size="12" style="font-size: 13px" />
+        <i class="ace-icon fa fa-lock" style="top: 0"></i>
+    </span>
+    <button type="submit" class="btn btn-sm btn-primary" style="padding:5px 9px;border:1px solid #2a62bc">
+         <span> Login </span>
+    </button>
+</form>
+
+<!-- Si hay error -->
+{% if messages %}
+<p class="alert-danger" style="position:absolute;font-size: 12px;border-radius: 4px; padding: 4px;margin-top: 3px;border: 1px solid #b03911">
+    {% for message in messages %}
+    <i class="ace-icon fa fa-exclamation-triangle"></i>
+    {{ message|lower|capfirst  }}
+    {% endfor %}
+</p>
+{% endif %}
+</div>

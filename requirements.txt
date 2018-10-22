@@ -1,0 +1,38 @@
+# python
+subprocess32
+
+# PIL Trabajo con imágenes
+pillow==5.3
+
+# Django
+Django==2.0
+
+#reportes pdf
+reportlab==3.5	
+
+# Unir pdf
+PyPDF2
+
+# Pruebas unitarias
+pytest < 3.3.0
+
+#coverage
+pytest-cov==2.6
+
+# Mock
+mock==2.0
+
+# Operaciones con fechas
+python-dateutil==2.7
+tzlocal
+pytz
+
+# para el codigo qr
+#pypng
+#zbar
+#qrencode
+#qrtools
+
+# Videos
+#requests
+#moviepy

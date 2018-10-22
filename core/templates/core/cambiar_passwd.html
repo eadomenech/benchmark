@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Cambiar contrase&ntilde;a {% endblock titulo %}
+
+{% block header %} Cambiar contrase&ntilde;a {% endblock header %}
+
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        {% for message in messages %}
+            <div class="alert alert-block alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="ace-icon fa fa-times"></i>
+                </button>
+                <p>                    
+                    <i class="ace-icon fa fa-exclamation-circle"></i>
+                    {{ message }}               
+                </p>
+            </div>
+        {% endfor %}
+        
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="ace-icon fa fa-times"></i>
+                </button>
+
+                <p>                   
+                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                    {{ error }}                
+                </p>
+            </div>
+        {% endfor %}
+        
+        <div class="panel panel-primary">
+            <div class="panel-heading"> Entre los datos de la nueva contrase&ntilde;a</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <form method="POST" action="">{% csrf_token %}
+                                {% for campo in form %}
+                                    <div class="form-group">
+                                        <label>{{ campo.label }}</label> {{ campo }}
+                                        {% for error in campo.errors %}
+                                            <div class="alert alert-danger">
+                                                <button type="button" class="close" data-dismiss="alert">
+                                                    <i class="ace-icon fa fa-times"></i>
+                                                </button>
+
+                                                <p>
+                                                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                                    {{ error|lower|capfirst  }}
+                                                </p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                                <button id="finalizar" class="btn btn-blue btn-primary btn-round">
+                					<i class="ace-icon fa fa-check bigger-110"></i>
+                					Finalizar									
+								</button>
+                                <button class="btn btn-grey btn-primary btn-round" type="reset">
+                					<i class="ace-icon fa fa-undo bigger-110"></i>
+                					Reiniciar									
+								</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

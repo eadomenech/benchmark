@@ -1,0 +1,88 @@
+{% load static %}
+
+<button data-target="#sidebar2" type="button" class="pull-left menu-toggler navbar-toggle">
+    <span class="sr-only">Toggle sidebar</span>
+    <i class="ace-icon fa fa-dashboard white bigger-125"></i>
+</button>
+
+<div id="sidebar2" class="sidebar responsive">
+    <!-- NAV-LIST -->
+    <div class="sidebar-toggle sidebar-collapse"> <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i></div>
+    <ul class="nav nav-list">
+        <!-- MENÚ Methods -->
+        {% if menu == "watermarking" %} <li class="active open"> {% else %} <li> {% endif %}
+
+            <a class="dropdown-toggle" href="#">
+            	  <i class="menu-icon">
+                   <img src="{% static 'core/icons/images_lite.png' %}" />
+                </i>
+                <span class="menu-text"> Methods </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+
+              {% if submenu == "methods" %}<li class="active">{% else %} <li> {% endif %}
+                    <a href="{% url 'watermarking:methods' %}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        List
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        <!-- /MENÚ Methods -->
+        <!-- MENÚ Cover Images -->
+        {% if menu == "watermarking" %} <li class="active open"> {% else %} <li> {% endif %}
+
+            <a class="dropdown-toggle" href="#">
+            	  <i class="menu-icon">
+                   <img src="{% static 'core/icons/images_lite.png' %}" />
+                </i>
+                <span class="menu-text"> Cover Images </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+
+              {% if submenu == "methods" %}<li class="active">{% else %} <li> {% endif %}
+                    <a href="{% url 'watermarking:coverImages' %}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        List
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        <!-- /MENÚ Cover Images -->
+        <!-- MENÚ Watermark Images -->
+        {% if menu == "watermarking" %} <li class="active open"> {% else %} <li> {% endif %}
+
+            <a class="dropdown-toggle" href="#">
+            	  <i class="menu-icon">
+                   <img src="{% static 'core/icons/images_lite.png' %}" />
+                </i>
+                <span class="menu-text"> Watermark Images </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+
+              {% if submenu == "methods" %}<li class="active">{% else %} <li> {% endif %}
+                    <a href="{% url 'watermarking:watermarkImages' %}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        List
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        <!-- /MENÚ Watermark Images -->
+    </ul><!-- /NAV-LIST -->
+</div>

@@ -1,0 +1,55 @@
+{% extends 'watermarking/watermarking_list.html' %}
+
+{% block header %} Cover Images {% endblock header %}
+
+{% block botones_tabla %}
+    <a class="btn btn-xs btn-info" href="{% url 'watermarking:newCoverImage' %}" data-rel="tooltip" data-original-title="New cover image" title="">
+        <i class="ace-icon fa fa-plus bigger-120"></i>
+    </a>
+{% endblock botones_tabla %}
+
+{% block titulo_tabla %} Results{% endblock titulo_tabla %}
+
+{% block head_tabla %}
+    <tr>
+        <th>UUID</th>
+        <th>Uploaded at</th>
+        <th>Options</th>
+    </tr>
+{% endblock head_tabla %}
+
+
+{% block body_tabla %}
+
+    {% for w in object_list %}
+    <tr>
+        <td>{{ w.uuid }}</td>
+        <td>{{ w.uploaded_at }}</td>
+
+        <td>
+            <div class="hidden-sm hidden-xs action-buttons">
+                <a class="blue" href="{% url 'watermarking:detail_coverImage' pk=w.id%}" data-rel="tooltip" title="Details">
+                   <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                </a>
+            </div>
+
+            <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                        <li>
+                            <a href="{% url 'watermarking:detail_coverImage' pk=w.id %}" data-rel="tooltip" title="Details">
+                                <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </td>
+    </tr>
+    {% endfor %}
+
+{% endblock body_tabla %}

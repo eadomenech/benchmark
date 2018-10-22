@@ -1,0 +1,111 @@
+{% extends 'core/base.html'%}
+
+{% block titulo %}{% endblock titulo %}
+
+{% block header %}{% endblock header %}
+
+{% block menu_vertical %}{% endblock menu_vertical %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="clearfix">
+                {% for message in messages %}
+                <div class="alert alert-block alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                            <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    <p>
+                        <i class="ace-icon fa fa-exclamation-circle"></i>
+                        {{ message }}
+                    </p>
+                </div>
+                {% endfor %}
+
+                {% block nota_tabla %} {% endblock nota_tabla %}
+
+                {% block filtro_tabla %} {% endblock filtro_tabla %}
+
+                <div class="pull-right tableTools-container">
+                    <div class="btn-group btn-overlap">
+                        {% block botones_tabla %} {% endblock botones_tabla %}
+                    </div>
+                </div>
+             </div>
+
+            {% if object_list %}
+                <div class="table-header">
+                {% block titulo_tabla %}{% endblock titulo_tabla %}
+                </div>
+
+                <div>
+                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            {% block head_tabla %}{% endblock head_tabla %}
+                        </thead>
+                        <tbody>
+                            {% block body_tabla %}{% endblock body_tabla %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+            <div class="alert alert-block alert-success" style="margin-top: 20px; width:60%">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="ace-icon fa fa-times"></i>
+                </button>
+                <p>
+                    <i class="ace-icon fa fa-exclamation-circle "></i>
+                    No hay resultados para mostrar.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+     <!-- Dialog para confirmación de eliminación -->
+    <div id="dialog-confirm" class="hide">
+        <div class="alert alert-info bigger-110" id="modal-body">
+            <!-- texto -->
+        </div>
+
+        <div class="space-6"></div>
+
+        <p class="bigger-110 bolder center grey">
+            <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+            Esta acci&oacute;n no podr&aacute; deshacerse.
+        </p>
+    </div>
+
+    <!-- Dialog para detalles -->
+    <div id="dialog-details" class="hide">
+      <div>
+          <table id="dynamic-table" class="table table-striped  table-hover">
+            <tbody></tbody>
+          </table>
+      </div>
+    </div>
+{% endblock contenido %}
+
+
+{% block page_js %}
+    {% load static %}
+    <script src="{% static "core/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "core/js/jquery.dataTables.bootstrap.min.js" %}"></script>
+
+    {% block page_scripts %}{% endblock page_scripts %}
+{% endblock page_js %}
+
+{% block jquery_conf %}
+    // Para los tooltips
+    $('[data-rel=tooltip]').tooltip();
+    $('[data-rel=popover]').popover({html: true});
+
+    //initiate dataTables plugin
+    $('#dynamic-table').dataTable({
+        "scrollX": true,
+        responsive: true,
+        bAutoWidth: false,
+        bSort:false,
+        enableFiltering: false
+    });
+{% endblock jquery_conf %}

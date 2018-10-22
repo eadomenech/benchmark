@@ -1,0 +1,9 @@
+core/static/*
+media/*
+__pycache__/
+*.py[cod]
+*.pyc
+*.so
+.Python
+.coverage
+db.sqlite3
