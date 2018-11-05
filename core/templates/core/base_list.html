@@ -6,7 +6,7 @@
 
 {% block menu_vertical %}{% endblock menu_vertical %}
 
-{% block contenido %}
+{% block content %}
     <div class="row">
         <div class="col-xs-12">
             <div class="clearfix">
@@ -84,13 +84,13 @@
           </table>
       </div>
     </div>
-{% endblock contenido %}
+{% endblock content %}
 
 
 {% block page_js %}
     {% load static %}
-    <script src="{% static "core/js/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "core/js/jquery.dataTables.bootstrap.min.js" %}"></script>
+    <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "js/jquery.dataTables.bootstrap.min.js" %}"></script>
 
     {% block page_scripts %}{% endblock page_scripts %}
 {% endblock page_js %}

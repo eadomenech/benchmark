@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
       {% endblock meta %}
 
-      <title>Gentelella Alela! | {% block title %}{% endblock %}</title>
+      <title>Data Hiding Methods in Digital Images | {% block title %}{% endblock %}</title>
 
       {% block stylesheets %}
         <!-- Bootstrap -->
@@ -41,7 +41,7 @@
 
           {% block sidebar %}
             <div class="col-md-3 left_col {% block sidebar_class %} {% endblock sidebar_class %}">
-              {% include "app/sidebar.html" %}
+              {% include "core/sidebar.html" %}
             </div>
           {% endblock sidebar %}
 
@@ -103,3 +103,8 @@
     {% endblock body %}
   </body>
 </html>
+
+
+
+{% block page_js %}
+{% endblock page_js %}
