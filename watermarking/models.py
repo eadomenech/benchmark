@@ -43,7 +43,7 @@ def random_noise_code_name(instance, filename):
 class Watermarking(models.Model):
     name = models.CharField(max_length=300, unique=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateField(default=timezone.now())
+    created_at = models.DateField(default=timezone.now)
 
     paper = models.FileField(
         upload_to=random_paper_name,

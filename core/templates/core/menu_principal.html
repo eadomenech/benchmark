@@ -6,7 +6,7 @@
     {% if modulo == 'watermarking' %} <li class="active hover">{% else %} <li class="hover"> {% endif %}
         <a href="{% url 'watermarking:index' %}">
             <i class="menu-icon fa ">
-               <img src="{% static "core/icons/images.jpeg" %}" height=30 width=30/>
+               <img src="{% static "core/icons/watermark.png" %}" height=30 width=30/>
             </i>
             <span class="menu-text"> Watermarking </span>
         </a>
@@ -14,6 +14,18 @@
         <b class="arrow"></b>
     </li>
     <!-- /MÓDULO WATERMARKING -->
+    <!-- MÓDULO STEGANOGRAFÍA -->
+    {% if modulo == 'steganography' %} <li class="active hover">{% else %} <li class="hover"> {% endif %}
+        <a href="">
+            <i class="menu-icon fa ">
+               <img src="{% static "core/icons/steganography.png" %}" height=30 width=30/>
+            </i>
+            <span class="menu-text"> Steganography </span>
+        </a>
+
+        <b class="arrow"></b>
+    </li>
+    <!-- /MÓDULO STEGANOGRAFÍA -->
 
     <!-- MÓDULO DE ADMINISTRACIÓN -->
     {% if modulo == 'administracion' %} <li class="active hover"> {% else %} <li class="hover">	{% endif %}

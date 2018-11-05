@@ -1,4 +1,3 @@
-core/static/*
 media/*
 __pycache__/
 *.py[cod]
