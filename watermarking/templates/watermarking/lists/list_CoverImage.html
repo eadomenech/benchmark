@@ -53,12 +53,12 @@
 
               <div class="row">
 
-                {% for i in "xxxxxx" %}
+                {% for cover in object_list %}
 
                     <div class="col-md-55">
                       <div class="thumbnail">
                         <div class="image view view-first">
-                          <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                          <img style="width: 100%; display: block;" src="/media/{{cover.cover_image}}" alt="image" />
                           <div class="mask no-caption">
                             <div class="tools tools-bottom">
                               <a href="#"><i class="fa fa-link"></i></a>
@@ -68,9 +68,9 @@
                           </div>
                         </div>
                         <div class="caption">
-                          <p><strong>Image Name</strong>
+                          <p><strong>{{cover.name}}</strong>
                           </p>
-                          <p>Snow and Ice Incoming</p>
+                          <p>{{cover.cover_image}}</p>
                         </div>
                       </div>
                     </div>
