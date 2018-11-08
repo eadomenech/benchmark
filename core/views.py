@@ -23,7 +23,7 @@ from django.core.files.storage import FileSystemStorage
 
 
 def index(request):
-    return redirect('watermarking:index')
+    return render(request, 'core/index.html')
 
 
 # Vista de login

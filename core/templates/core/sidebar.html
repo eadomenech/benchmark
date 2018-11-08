@@ -18,9 +18,12 @@
     <div class="menu_section">
       <h3>General</h3>
       <ul class="nav side-menu">
-        <li><a><i class="fa fa-home"></i> Cover Images <span class="fa fa-chevron-down"></span></a>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/datahiding_icono.png' %}" />
+          </i> Cover Images <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="index.html">List</a></li>
+            <li><a href="{% url 'watermarking:coverImages' %}">Gallery</a></li>
           </ul>
         </li>
       </ul>
@@ -28,7 +31,10 @@
     <div class="menu_section">
       <h3>Watermarking</h3>
       <ul class="nav side-menu">
-        <li><a><i class="fa fa-home"></i> Methods <span class="fa fa-chevron-down"></span></a>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/watermarking_icono.png' %}" />
+          </i> Methods <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'watermarking:methods' %}">List</a></li>
           </ul>
@@ -38,7 +44,10 @@
     <div class="menu_section">
       <h3>Steganography</h3>
       <ul class="nav side-menu">
-        <li><a><i class="fa fa-bug"></i> Methods <span class="fa fa-chevron-down"></span></a>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/DH_icono.png' %}" />
+          </i> Methods <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="e_commerce.html">List</a></li>
           </ul>

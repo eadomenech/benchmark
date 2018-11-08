@@ -1,4 +1,4 @@
-{% extends 'watermarking/watermarking_list.html' %}
+{% extends 'core/base.html' %}
 
 {% block header %} Cover Images {% endblock header %}
 
@@ -8,48 +8,247 @@
     </a>
 {% endblock botones_tabla %}
 
-{% block titulo_tabla %} Results{% endblock titulo_tabla %}
+{% block title %} Media Gallery {% endblock title %}
 
-{% block head_tabla %}
-    <tr>
-        <th>UUID</th>
-        <th>Uploaded at</th>
-        <th>Options</th>
-    </tr>
-{% endblock head_tabla %}
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
 
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3> Media Gallery <small> gallery design</small> </h3>
+        </div>
 
-{% block body_tabla %}
-
-    {% for w in object_list %}
-    <tr>
-        <td>{{ w.uuid }}</td>
-        <td>{{ w.uploaded_at }}</td>
-
-        <td>
-            <div class="hidden-sm hidden-xs action-buttons">
-                <a class="blue" href="{% url 'watermarking:detail_coverImage' pk=w.id%}" data-rel="tooltip" title="Details">
-                   <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                </a>
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+              </span>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="hidden-md hidden-lg">
-                <div class="inline pos-rel">
-                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                    </button>
+      <div class="clearfix"></div>
 
-                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                        <li>
-                            <a href="{% url 'watermarking:detail_coverImage' pk=w.id %}" data-rel="tooltip" title="Details">
-                                <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
-                            </a>
-                        </li>
-                    </ul>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <ul class="nav navbar-right panel_toolbox">
+                <li>
+                  <a class="btn btn-xs" href="{% url 'watermarking:newCoverImage' %}" data-rel="tooltip" data-original-title="New cover image" title="">
+                      <i class="ace-icon fa fa-plus bigger-120"> Add </i>
+                  </a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+              <div class="row">
+
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask">
+                        <p>Your Text</p>
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p>Snow and Ice Incoming for the South</p>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            </td>
-    </tr>
-    {% endfor %}
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask">
+                        <p>Your Text</p>
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p>Snow and Ice Incoming for the South</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask">
+                        <p>Your Text</p>
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p>Snow and Ice Incoming for the South</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask">
+                        <p>Your Text</p>
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p>Snow and Ice Incoming for the South</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask">
+                        <p>Your Text</p>
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p>Snow and Ice Incoming for the South</p>
+                    </div>
+                  </div>
+                </div>
 
-{% endblock body_tabla %}
+
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask no-caption">
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p><strong>Image Name</strong>
+                      </p>
+                      <p>Snow and Ice Incoming</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask no-caption">
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p><strong>Image Name</strong>
+                      </p>
+                      <p>Snow and Ice Incoming</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask no-caption">
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p><strong>Image Name</strong>
+                      </p>
+                      <p>Snow and Ice Incoming</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask no-caption">
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p><strong>Image Name</strong>
+                      </p>
+                      <p>Snow and Ice Incoming</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                    <div class="image view view-first">
+                      <img style="width: 100%; display: block;" src="/static/images/media.jpg" alt="image" />
+                      <div class="mask no-caption">
+                        <div class="tools tools-bottom">
+                          <a href="#"><i class="fa fa-link"></i></a>
+                          <a href="#"><i class="fa fa-pencil"></i></a>
+                          <a href="#"><i class="fa fa-times"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <p><strong>Image Name</strong>
+                      </p>
+                      <p>Snow and Ice Incoming</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
