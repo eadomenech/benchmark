@@ -28,7 +28,7 @@ SECRET_KEY = 'v22t$f_y2b))lrn*6g%4jjb^a6&$1&yatc2k9rh5#xx22l$h=q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '10.25.45.55']
+ALLOWED_HOSTS = ['127.0.0.1', '10.25.45.55', '192.168.1.103']
 
 
 # Application definition
@@ -123,9 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(os.path.dirname(BASE_DIR), 'assets'),
-)
+STATICFILES_DIRS = (os.path.dirname(BASE_DIR), 'assets')
 
 # this line is added and it serves as the root address of uploaded file
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
