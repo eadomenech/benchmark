@@ -13,7 +13,7 @@ class WatermarkingForm(forms.ModelForm):
 class CoverImageForm(forms.ModelForm):
     class Meta:
         model = CoverImage
-        fields = ['cover_image']
+        fields = ['name', 'cover_image']
 
 
 class WatermarkImageForm(forms.ModelForm):

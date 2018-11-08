@@ -64,8 +64,8 @@ class Watermarking(models.Model):
 
 
 class CoverImage(models.Model):
-    uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4())
-    name = models.CharField(max_length=128, unique=True, default='Name')
+    uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4)
+    name = models.CharField(max_length=128, unique=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     cover_image = models.ImageField(
         upload_to=random_cover_image_name,
@@ -81,7 +81,7 @@ class CoverImage(models.Model):
 
 
 class WatermarkImage(models.Model):
-    uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4())
+    uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     watermark_image = models.ImageField(
         upload_to=random_watermark_image_name,
