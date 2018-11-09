@@ -29,7 +29,17 @@ class DetailWatermarking(DetailView):
     template_name = 'watermarking/details/detail_Watermarking.html'
 
 
-class CreateWatermarking(CreateView):
+class FormActionMixin(object):
+
+    def post(self, request, *args, **kwargs):
+        """Add 'Cancel' button redirect."""
+        if "cancel" in request.POST:
+            return HttpResponseRedirect(self.success_url)
+        else:
+            return super(FormActionMixin, self).post(request, *args, **kwargs)
+
+
+class CreateWatermarking(FormActionMixin, CreateView):
 
     model = Watermarking
     template_name = "watermarking/create/create_Watermarking.html"
