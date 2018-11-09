@@ -1,62 +1,67 @@
-{% extends 'watermarking/watermarking_base.html'%}
+{% extends 'core/base.html'%}
 
 {% block titulo %} New Watermarking {% endblock titulo %}
 
 {% block header %} New Watermarking {% endblock header %}
 
-{% block contenido%}
-    <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert">
-                        <i class="ace-icon fa fa-times"></i>
-                    </button>
-                    <p>
-                        <i class="ace-icon fa fa-exclamation-triangle"></i>
-                        {{ error }}
-                    </p>
-                </div>
-            {% endfor %}
-
-            <div class="panel panel-primary">
-                <div class="panel-heading"> Insert data</div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <form method="post" action="" enctype="multipart/form-data">{% csrf_token %}
-                                    {% for campo in form %}
-                                        <div class="form-group">
-                                            <label>{{ campo.label }}</label>
-                                            <div class="input" >{{ campo }}</div>
-                                            {% for error in campo.errors %}
-                                                <div class="alert alert-danger">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <i class="ace-icon fa fa-times"></i>
-                                                    </button>
-                                                    <p>
-                                                        <i class="ace-icon fa fa-exclamation-triangle"></i>
-                                                        {{ error|lower|capfirst  }}
-                                                    </p>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endfor %}
-
-                                    <button type="submit" class="btn btn-blue btn-primary btn-round">
-                                        <i class="ace-icon fa fa-check bigger-110"></i>
-                                        Submit
-                                    </button>
-                                    <a class="btn btn-grey btn-primary btn-round" href="{% url 'watermarking:methods' %}">
-                                        <i class="ace-icon fa fa-times bigger-110"></i>
-                                        Cancel
-                                    </a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Watermarking Method</h2>
+              <div class="clearfix"></div>
             </div>
+            <div class="x_content">
+              <br />
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">
+                          <i class="ace-icon fa fa-times"></i>
+                      </button>
+                      <p>
+                          <i class="ace-icon fa fa-exclamation-triangle"></i>
+                          {{ error }}
+                      </p>
+                  </div>
+              {% endfor %}
+              {% if form.non_field_errors %}
+                  <br />
+              {% endif %}
+
+              <form method="post" action="" enctype="multipart/form-data"> {% csrf_token %}
+                {% for campo in form %}
+                    <div class="form-group">
+                        <label>{{ campo.label }}</label>
+                        <div class="input" >{{ campo }}</div>
+                        {% for error in campo.errors %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="ace-icon fa fa-times"></i>
+                                </button>
+                                <p>
+                                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                    {{ error|lower|capfirst  }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <a class="btn btn-primary" href="{% url 'watermarking:methods' %}">Cancel</a>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
         </div>
-    </div>
-{% endblock contenido %}
+      </div>
+
+{% endblock content %}
