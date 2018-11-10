@@ -44,7 +44,12 @@ INSTALLED_APPS = [
     'watermarking.apps.WatermarkingConfig',
     'app.apps.AppConfig',
     'crispy_forms',
+    'djcelery'
 ]
+
+# Celery
+import djcelery
+djcelery.setup_loader()
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

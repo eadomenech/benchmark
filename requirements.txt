@@ -10,8 +10,11 @@ Django==2.0
 # Crispy
 django-crispy-forms
 
+# Integracion con Celery
+django-celery
+
 #reportes pdf
-reportlab==3.5	
+reportlab==3.5
 
 # Unir pdf
 PyPDF2
