@@ -9,11 +9,7 @@ from crispy_forms.bootstrap import (
     PrependedText, PrependedAppendedText, FormActions)
 
 
-class WatermarkingForm(forms.ModelForm):
-    class Meta:
-        model = Watermarking
-        fields = ['name', 'created_at', 'paper', 'source_code']
-
+class BtnsSubmitCancelMixing(object):
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
     helper.add_input(Submit(
@@ -22,7 +18,13 @@ class WatermarkingForm(forms.ModelForm):
     helper.form_method = 'POST'
 
 
-class CoverImageForm(forms.ModelForm):
+class WatermarkingForm(BtnsSubmitCancelMixing, forms.ModelForm):
+    class Meta:
+        model = Watermarking
+        fields = ['name', 'created_at', 'paper', 'source_code']
+
+
+class CoverImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = CoverImage
         fields = ['name', 'cover_image']

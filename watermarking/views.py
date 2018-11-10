@@ -71,7 +71,7 @@ class DetailCoverImage(DetailView):
     template_name = 'watermarking/details/detail_CoverImage.html'
 
 
-class CreateCoverImage(CreateView):
+class CreateCoverImage(FormActionMixin, CreateView):
 
     model = CoverImage
     template_name = "watermarking/create/create_CoverImage.html"
