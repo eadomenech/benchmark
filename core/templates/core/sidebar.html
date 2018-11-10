@@ -29,6 +29,14 @@
         <li><a>
           <i class="menu-icon">
           <img src="{% static 'core/images/datahiding_icono.png' %}" />
+        </i> Watermark Images <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'watermarking:watermarkImages' %}">Gallery</a></li>
+          </ul>
+        </li>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/datahiding_icono.png' %}" />
         </i> Metrics <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'watermarking:metrics' %}">List</a></li>
@@ -49,7 +57,7 @@
         </li>
       </ul>
     </div>
-    <div class="menu_section">
+    <!-- <div class="menu_section">
       <h3>Steganography</h3>
       <ul class="nav side-menu">
         <li><a>
@@ -61,7 +69,8 @@
           </ul>
         </li>
       </ul>
-    </div>
+    </div> -->
+
   </div>
   <!-- /sidebar menu -->
 </div>

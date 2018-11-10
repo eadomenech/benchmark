@@ -104,11 +104,11 @@ class DetailWatermarkImage(DetailView):
     template_name = 'watermarking/details/detail_WatermarkImage.html'
 
 
-class CreateWatermarkImage(CreateView):
+class CreateWatermarkImage(FormActionMixin, CreateView):
 
     model = WatermarkImage
     template_name = "watermarking/create/create_WatermarkImage.html"
-    success_url = reverse_lazy("watermarking:coverImages")
+    success_url = reverse_lazy("watermarking:watermarkImages")
     form_class = WatermarkImageForm
 
     def form_valid(self, form):

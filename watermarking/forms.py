@@ -30,10 +30,10 @@ class CoverImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
         fields = ['name', 'cover_image']
 
 
-class WatermarkImageForm(forms.ModelForm):
+class WatermarkImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = WatermarkImage
-        fields = ['watermark_image']
+        fields = ['name', 'watermark_image']
 
 
 class MetricForm(BtnsSubmitCancelMixing, forms.ModelForm):

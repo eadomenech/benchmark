@@ -1,55 +1,72 @@
-{% extends 'watermarking/watermarking_list.html' %}
+{% extends 'core/base.html' %}
 
 {% block header %} Watermark Images {% endblock header %}
 
-{% block botones_tabla %}
-    <a class="btn btn-xs btn-info" href="{% url 'watermarking:newWatermarkImage' %}" data-rel="tooltip" data-original-title="New cover image" title="">
-        <i class="ace-icon fa fa-plus bigger-120"></i>
-    </a>
-{% endblock botones_tabla %}
+{% block title %} Watermark Images {% endblock title %}
 
-{% block titulo_tabla %} Results{% endblock titulo_tabla %}
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
 
-{% block head_tabla %}
-    <tr>
-        <th>UUID</th>
-        <th>Uploaded at</th>
-        <th>Options</th>
-    </tr>
-{% endblock head_tabla %}
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3> Watermark Image Gallery </h3>
+        </div>
+      </div>
 
+      <div class="clearfix"></div>
 
-{% block body_tabla %}
-
-    {% for w in object_list %}
-    <tr>
-        <td>{{ w.uuid }}</td>
-        <td>{{ w.uploaded_at }}</td>
-
-        <td>
-            <div class="hidden-sm hidden-xs action-buttons">
-                <a class="blue" href="{% url 'watermarking:detail_watermarkImage' pk=w.id%}" data-rel="tooltip" title="Details">
-                   <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                </a>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <ul class="nav navbar-right panel_toolbox">
+                <li>
+                  <a class="btn btn-xs" href="{% url 'watermarking:newWatermarkImage' %}" data-rel="tooltip" data-original-title="New cover image" title="">
+                      <i class="ace-icon fa fa-plus bigger-120"> Add </i>
+                  </a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
             </div>
+            <div class="x_content">
 
-            <div class="hidden-md hidden-lg">
-                <div class="inline pos-rel">
-                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                    </button>
+              <div class="row">
 
-                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                        <li>
-                            <a href="{% url 'watermarking:detail_watermarkImage' pk=w.id %}" data-rel="tooltip" title="Details">
-                                <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                {% for watermark in object_list %}
+
+                    <div class="col-md-55">
+                      <div class="thumbnail">
+                        <div class="image view view-first">
+                          <img style="width: 100%; display: block;" src="/media/{{watermark.watermark_image}}" alt="image" />
+                          <div class="mask no-caption">
+                            <div class="tools tools-bottom">
+                              <a href="#"><i class="fa fa-link"></i></a>
+                              <a href="#"><i class="fa fa-pencil"></i></a>
+                              <a href="#"><i class="fa fa-times"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="caption">
+                          <p><strong>{{watermark.name}}</strong>
+                          </p>
+                          <p>2018 used</p>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+              </div>
             </div>
-            </td>
-    </tr>
-    {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
 
-{% endblock body_tabla %}
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
