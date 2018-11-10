@@ -1,4 +1,3 @@
-import os
 import uuid
 
 from django.db import models
@@ -9,41 +8,10 @@ from django.urls import reverse
 # File validators
 from django.core.validators import FileExtensionValidator
 
-
-def random_paper_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('papers/', filename)
-
-
-def random_source_code_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('source_codes/', filename)
-
-
-def random_cover_image_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('cover_images/', filename)
-
-
-def random_watermark_image_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('watermark_images/', filename)
-
-
-def random_noise_code_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('noise_codes/', filename)
-
-
-def random_metric_code_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('metric_codes/', filename)
+from .helpers import (
+    random_paper_name, random_source_code_name, random_cover_image_name,
+    random_watermark_image_name, random_noise_code_name,
+    random_metric_code_name)
 
 
 class Watermarking(models.Model):
@@ -133,3 +101,43 @@ class Metric(models.Model):
 
     def get_absolute_url(self):
         return reverse('watermarking:metrics')
+
+
+class SprintWatermarking(models.Model):
+    watermarking = models.ForeignKey(Watermarking, on_delete=models.CASCADE)
+    coverImage = models.ForeignKey(CoverImage, on_delete=models.CASCADE)
+    watermark = models.ForeignKey(WatermarkImage, on_delete=models.CASCADE)
+    watermarked_image = models.ImageField()
+
+    def __str__(self):
+        return self.watermarking + '_' + self.coverImage + '_' + self.watermark
+
+
+class MetricSprintWatermarking(models.Model):
+    metric = models.ForeignKey(Metric, on_delete=models.CASCADE)
+    sprintWatermarking = models.ForeignKey(
+        SprintWatermarking, on_delete=models.CASCADE)
+    value = models.FloatField()
+
+    def __str__(self):
+        return self.watermarking + '_' + self.sprintWatermarking
+
+
+class NoiseSprintWatermarking(models.Model):
+    noise = models.ForeignKey(Noise, on_delete=models.CASCADE)
+    sprintWatermarking = models.ForeignKey(
+        SprintWatermarking, on_delete=models.CASCADE)
+    watermarked_image_with_noise = models.ImageField()
+
+    def __str__(self):
+        return self.noise + '_' + self.sprintWatermarking
+
+
+class MetricNoiseSprintWatermarking(models.Model):
+    metric = models.ForeignKey(Metric, on_delete=models.CASCADE)
+    noiseSprintWatermarking = models.ForeignKey(
+        NoiseSprintWatermarking, on_delete=models.CASCADE)
+    value = models.FloatField()
+
+    def __str__(self):
+        return self.metric + '_' + self.noiseSprintWatermarking
