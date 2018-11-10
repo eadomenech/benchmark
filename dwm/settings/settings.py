@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'gentelella',
     'crispy_forms',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [

@@ -13,6 +13,7 @@ django-crispy-forms
 # Celery
 celery==4.2
 django-celery-results
+django-celery-beat
 
 # Integracion con Celery
 # django-celery
