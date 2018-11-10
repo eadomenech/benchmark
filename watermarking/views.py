@@ -11,11 +11,11 @@ from .models import Watermarking, CoverImage, WatermarkImage, Metric
 from .forms import (
     WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm)
 
-from .task import my_first_task
+from .task import mainTask
 
 
 def index(request):
-    my_first_task.delay(100)
+    mainTask.delay()
     return render(request, 'watermarking/index.html')
 
 
@@ -54,6 +54,7 @@ class CreateWatermarking(FormActionMixin, CreateView):
         watermarking = form.save(commit=False)
         try:
             watermarking.save()
+            mainTask.delay()
             return super(CreateWatermarking, self).form_valid(form)
         except Exception as e:
             form.add_error(None, e)
@@ -86,6 +87,7 @@ class CreateCoverImage(FormActionMixin, CreateView):
         coverImage = form.save(commit=False)
         try:
             coverImage.save()
+            mainTask.delay()
             return super(CreateCoverImage, self).form_valid(form)
         except Exception as e:
             form.add_error(None, e)
@@ -118,6 +120,7 @@ class CreateWatermarkImage(FormActionMixin, CreateView):
         coverImage = form.save(commit=False)
         try:
             coverImage.save()
+            mainTask.delay()
             return super(CreateWatermarkImage, self).form_valid(form)
         except Exception as e:
             form.add_error(None, e)

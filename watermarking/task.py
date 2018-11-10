@@ -1,12 +1,18 @@
 from celery import shared_task
+from .models import *
 
 
 @shared_task
-def my_first_task(total):
-    # for i in range(total):
-    #     username = 'user_{}'.format(get_random_string(10, string.ascii_letters))
-    #     email = '{}@example.com'.format(username)
-    #     password = get_random_string(50)
-    #     User.objects.create_user(
-    #         username=username, email=email, password=password)
-    return '{} random users created with success!'.format(total)
+def mainTask():
+    for cover in CoverImage.objects.all():
+        for watermark in WatermarkImage.objects.all():
+            for watermarking in Watermarking.objects.all():
+                if not SprintWatermarking.objects.filter(
+                        watermarking=watermarking.id, coverImage=cover,
+                        watermark=watermark).exists():
+                    sprint = SprintWatermarking.objects.create(
+                        watermarking=watermarking, coverImage=cover,
+                        watermark=watermark
+                    )
+                    print(sprint)
+    return 'Success!'

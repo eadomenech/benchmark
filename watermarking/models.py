@@ -110,7 +110,7 @@ class SprintWatermarking(models.Model):
     watermarked_image = models.ImageField()
 
     def __str__(self):
-        return self.watermarking + '_' + self.coverImage + '_' + self.watermark
+        return str(self.watermarking) + '_' + str(self.coverImage) + '_' + str(self.watermark)
 
 
 class MetricSprintWatermarking(models.Model):
@@ -120,7 +120,7 @@ class MetricSprintWatermarking(models.Model):
     value = models.FloatField()
 
     def __str__(self):
-        return self.watermarking + '_' + self.sprintWatermarking
+        return str(self.watermarking) + '_' + str(self.sprintWatermarking)
 
 
 class NoiseSprintWatermarking(models.Model):
@@ -130,7 +130,7 @@ class NoiseSprintWatermarking(models.Model):
     watermarked_image_with_noise = models.ImageField()
 
     def __str__(self):
-        return self.noise + '_' + self.sprintWatermarking
+        return str(self.noise) + '_' + str(self.sprintWatermarking)
 
 
 class MetricNoiseSprintWatermarking(models.Model):
@@ -140,4 +140,4 @@ class MetricNoiseSprintWatermarking(models.Model):
     value = models.FloatField()
 
     def __str__(self):
-        return self.metric + '_' + self.noiseSprintWatermarking
+        return str(self.metric) + '_' + str(self.noiseSprintWatermarking)
