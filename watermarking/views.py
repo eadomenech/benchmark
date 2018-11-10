@@ -7,9 +7,10 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import (
     CreateView, DeleteView, FormView, UpdateView)
 
-from .models import Watermarking, CoverImage, WatermarkImage, Metric
+from .models import Watermarking, CoverImage, WatermarkImage, Metric, Noise
 from .forms import (
-    WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm)
+    WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm,
+    NoiseForm)
 
 from .task import mainTask
 
@@ -157,3 +158,34 @@ class CreateMetric(FormActionMixin, CreateView):
         except Exception as e:
             form.add_error(None, e)
         return super(CreateMetric, self).form_invalid(form)
+
+
+# Noise Views
+class ListNoise(ListView):
+    template_name = 'watermarking/lists/list_Noise.html'
+
+    def get_queryset(self):
+        """Return noises."""
+        return Noise.objects.all()
+
+
+class DetailNoise(DetailView):
+    model = Noise
+    template_name = 'watermarking/details/detail_Noise.html'
+
+
+class CreateNoise(FormActionMixin, CreateView):
+
+    model = Noise
+    template_name = "watermarking/create/create_Noise.html"
+    success_url = reverse_lazy("watermarking:noises")
+    form_class = NoiseForm
+
+    def form_valid(self, form):
+        metric = form.save(commit=False)
+        try:
+            metric.save()
+            return super(CreateNoise, self).form_valid(form)
+        except Exception as e:
+            form.add_error(None, e)
+        return super(CreateNoise, self).form_invalid(form)

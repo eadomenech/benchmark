@@ -34,4 +34,13 @@ urlpatterns = [
     path(
         'newMetric', views.CreateMetric.as_view(),
         name='newMetric'),
+    path(
+        'noises', views.ListNoise.as_view(),
+        name='noises'),
+    path(
+        'detail_noise/<int:pk>/', views.DetailNoise.as_view(),
+        name='detail_noise'),
+    path(
+        'newNoise', views.CreateNoise.as_view(),
+        name='newNoise'),
 ]

@@ -1,0 +1,43 @@
+{% extends 'core/base.html'%}
+
+{% block titulo %} New Noise {% endblock titulo %}
+
+{% block header %} New Noise {% endblock header %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Noise</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">
+                          <i class="ace-icon fa fa-times"></i>
+                      </button>
+                      <p>
+                          <i class="ace-icon fa fa-exclamation-triangle"></i>
+                          {{ error }}
+                      </p>
+                  </div>
+              {% endfor %}
+              {% if form.non_field_errors %}
+                  <br />
+              {% endif %}
+
+              {% load crispy_forms_tags %}
+              {% crispy form %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}
