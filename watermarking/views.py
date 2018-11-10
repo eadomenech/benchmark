@@ -11,8 +11,11 @@ from .models import Watermarking, CoverImage, WatermarkImage, Metric
 from .forms import (
     WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm)
 
+from .task import my_first_task
+
 
 def index(request):
+    my_first_task.delay(100)
     return render(request, 'watermarking/index.html')
 
 

@@ -10,8 +10,12 @@ Django==2.0
 # Crispy
 django-crispy-forms
 
+# Celery
+celery==4.2
+django-celery-results
+
 # Integracion con Celery
-django-celery
+# django-celery
 
 #reportes pdf
 reportlab==3.5

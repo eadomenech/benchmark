@@ -42,14 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'watermarking.apps.WatermarkingConfig',
-    'app.apps.AppConfig',
+    'gentelella',
     'crispy_forms',
-    'djcelery'
+    'django_celery_results',
 ]
-
-# Celery
-import djcelery
-djcelery.setup_loader()
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +75,7 @@ TEMPLATES = [
     },
 ]
 
+# Crispy
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'dwm.wsgi.application'
@@ -139,3 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # this line is added and it creates a directory named media in your appfolder
 # where the uploaded images will be stored
 MEDIA_URL = '/media/'
+
+# Celery Settings
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'django-db'
