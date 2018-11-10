@@ -25,4 +25,13 @@ urlpatterns = [
     path(
         'newWatermarkImage', views.CreateWatermarkImage.as_view(),
         name='newWatermarkImage'),
+    path(
+        'metrics', views.ListMetric.as_view(),
+        name='metrics'),
+    path(
+        'detail_metric/<int:pk>/', views.DetailMetric.as_view(),
+        name='detail_metric'),
+    path(
+        'newMetric', views.CreateMetric.as_view(),
+        name='newMetric'),
 ]

@@ -7,8 +7,9 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import (
     CreateView, DeleteView, FormView, UpdateView)
 
-from .models import Watermarking, CoverImage, WatermarkImage
-from .forms import WatermarkingForm, CoverImageForm, WatermarkImageForm
+from .models import Watermarking, CoverImage, WatermarkImage, Metric
+from .forms import (
+    WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm)
 
 
 def index(request):
@@ -119,3 +120,34 @@ class CreateWatermarkImage(CreateView):
             form.add_error(None, e)
 
         return super(CreateWatermarkImage, self).form_invalid(form)
+
+
+# Metrics Views
+class ListMetric(ListView):
+    template_name = 'watermarking/lists/list_Metric.html'
+
+    def get_queryset(self):
+        """Return metrics."""
+        return Metric.objects.all()
+
+
+class DetailMetric(DetailView):
+    model = Metric
+    template_name = 'watermarking/details/detail_Metric.html'
+
+
+class CreateMetric(FormActionMixin, CreateView):
+
+    model = Metric
+    template_name = "watermarking/create/create_Metric.html"
+    success_url = reverse_lazy("watermarking:metrics")
+    form_class = MetricForm
+
+    def form_valid(self, form):
+        metric = form.save(commit=False)
+        try:
+            metric.save()
+            return super(CreateMetric, self).form_valid(form)
+        except Exception as e:
+            form.add_error(None, e)
+        return super(CreateMetric, self).form_invalid(form)

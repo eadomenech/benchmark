@@ -40,6 +40,12 @@ def random_noise_code_name(instance, filename):
     return os.path.join('noise_codes/', filename)
 
 
+def random_metric_code_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('metric_codes/', filename)
+
+
 class Watermarking(models.Model):
     name = models.CharField(max_length=300, unique=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -110,3 +116,19 @@ class Noise(models.Model):
 
     def get_absolute_url(self):
         return reverse('watermarking:noises')
+
+
+class Metric(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    source_code = models.FileField(
+        upload_to=random_metric_code_name,
+        validators=[FileExtensionValidator(
+            allowed_extensions=['py'],
+            message="Please upload '.py' files only.")])
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('watermarking:metrics')
