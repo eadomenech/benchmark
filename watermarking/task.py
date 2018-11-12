@@ -1,5 +1,6 @@
 # -*- encoding:utf-8 -*-
 # -*- coding:utf-8 -*-
+import os
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
@@ -14,6 +15,12 @@ import subprocess
 
 @shared_task
 def mainTask():
+    list_dir = ['media/watermarked_images/', 'media/noised_images/']
+    for i in list_dir:
+        try:
+            os.stat(i)
+        except:
+            os.mkdir(i)
     for cover in CoverImage.objects.all():
         for watermark in WatermarkImage.objects.all():
             for watermarking in Watermarking.objects.all():
