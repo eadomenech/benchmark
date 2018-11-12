@@ -18,6 +18,9 @@ django-celery-beat
 # Integracion con Celery
 # django-celery
 
+# Extensions
+django-extensions
+
 #reportes pdf
 reportlab==3.5
 
