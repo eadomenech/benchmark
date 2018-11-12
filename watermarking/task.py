@@ -44,25 +44,6 @@ def mainTask():
                         watermark=watermark,
                         watermarked_image=watermarked_image
                     )
-                    # process = Popen(
-                    #     [
-                    #         'python', 'media/'+str(
-                    #             watermarking.source_code),
-                    #         '-i', 'media/'+str(cover.cover_image),
-                    #         '-w', 'media/'+str(
-                    #             watermark.watermark_image),
-                    #         '-o', watermarked_image],
-                    #     shell=True, stdout=PIPE, stderr=PIPE
-                    # )
-                    # stdout, stderr = process.communicate()
-                    # if stderr:
-                    #     for line in stderr.strip().split("\n"):
-                    #         print(line)
-                    # else:
-                    #     sprint = SprintWatermarking.objects.create(
-                    #         watermarking=watermarking, cover_image=cover,
-                    #         watermark=watermark
-                    #     )
                 sprint = get_object_or_404(
                     SprintWatermarking, watermarking=watermarking.id,
                     cover_image=cover, watermark=watermark)
@@ -89,14 +70,14 @@ def mainTask():
                     if not MetricSprintWatermarking.objects.filter(
                             metric=metric, sprintWatermarking=sprint).exists():
                         # subprocess
-                        value = subprocess.call(
+                        p = subprocess.run(
                             [
                                 'python media/' + str(metric.source_code) +
                                 ' -i media/' + str(sprint.cover_image.cover_image) +
                                 ' -w media/' + str(sprint.watermarked_image)],
-                            shell=True
+                            stdout=subprocess.PIPE, shell=True
                         )
                         MetricSprintWatermarking.objects.create(
                             metric=metric, sprintWatermarking=sprint,
-                            value=value)
+                            value=float(p.stdout))
     return 'Success!'
