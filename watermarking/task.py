@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 # -*- coding:utf-8 -*-
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 import uuid
 
@@ -55,4 +56,24 @@ def mainTask():
                     #         watermarking=watermarking, coverImage=cover,
                     #         watermark=watermark
                     #     )
+                sprint = get_object_or_404(
+                    SprintWatermarking, watermarking=watermarking.id,
+                    coverImage=cover, watermark=watermark)
+                for noise in Noise.objects.all():
+                    if not NoiseSprintWatermarking.objects.filter(
+                            noise=noise, sprintWatermarking=sprint).exists():
+                        # subprocess
+                        ext = str(cover.cover_image).split('.')[-1]
+                        filename = "%s.%s" % (uuid.uuid4(), ext)
+                        noised_image = 'noised_images/'+filename
+                        subprocess.call(
+                            [
+                                'python media/' + str(noise.source_code) +
+                                ' -i media/' + str(sprint.watermarked_image) +
+                                ' -o media/' + noised_image],
+                            shell=True
+                        )
+                        NoiseSprintWatermarking.objects.create(
+                            noise=noise, sprintWatermarking=sprint,
+                            watermarked_image_with_noise=noised_image)
     return 'Success!'

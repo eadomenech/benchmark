@@ -50,6 +50,16 @@
             <li><a href="{% url 'watermarking:noises' %}">List</a></li>
           </ul>
         </li>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/datahiding_icono.png' %}" />
+        </i> Download Template <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% static 'watermarking/watermarking.py' %}">Watermarking Method</a></li>
+            <li><a href="{% static 'watermarking/metric.py' %}">Metric</a></li>
+            <li><a href="{% static 'watermarking/noise.py' %}">Noise</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
     <div class="menu_section">
