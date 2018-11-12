@@ -153,6 +153,7 @@ class CreateMetric(FormActionMixin, CreateView):
         metric = form.save(commit=False)
         try:
             metric.save()
+            mainTask.delay()
             return super(CreateMetric, self).form_valid(form)
         except Exception as e:
             form.add_error(None, e)

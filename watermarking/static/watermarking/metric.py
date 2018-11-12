@@ -6,44 +6,35 @@ import sys
 from PIL import Image
 
 
-def insert(cover_image, watermark_image):
-    return cover_image
-
-
-def extract(watermarking_image, cover_image=None, watermark_image=None):
-    return watermark_image
+def calc_metric(cover_image, watermarked_image):
+    return 100
 
 
 def main(args):
-    input_filename = None
-    watermark_filename = None
-    output_filename = None
+    cover_filename = None
+    watermarked_filename = None
 
     # print('ARGV      :', sys.argv[1:])
 
     options, remainder = getopt.getopt(
-        sys.argv[1:], 'i:w:o:v',
-        ['input', 'watermark', 'output='])
+        sys.argv[1:], 'i:w:v',
+        ['image', 'watermarked', 'output='])
     # print('OPTIONS   :', options)
 
     for opt, arg in options:
-        if opt in ('-i', '--input'):
-            input_filename = arg
-        elif opt in ('-w', '--watermark'):
-            watermark_filename = arg
-        elif opt in ('-o', '--output'):
-            output_filename = arg
+        if opt in ('-i', '--image'):
+            cover_filename = arg
+        elif opt in ('-w', '--watermarked'):
+            watermarked_filename = arg
 
-    print('INPUT    :', input_filename)
-    print('WATERMARK    :', watermark_filename)
-    print('OUTPUT    :', output_filename)
+    print('IMAGE    :', cover_filename)
+    print('WATERMARKED    :', watermarked_filename)
     print('REMAINING :', remainder)
 
-    if input_filename and watermark_filename:
-        cover_image = Image.open(input_filename)
-        watermark_image = Image.open(watermark_filename)
-        watermarked_image = insert(cover_image, watermark_image)
-        watermarked_image.save(output_filename)
+    if cover_filename and watermarked_filename:
+        cover_image = Image.open(cover_filename)
+        watermarked_image = Image.open(watermarked_filename)
+        return calc_metric(cover_image, watermarked_image)
     else:
         print('input_filename and watermark_filename not None')
 

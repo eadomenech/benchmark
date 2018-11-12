@@ -39,7 +39,7 @@ class WatermarkImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
 class MetricForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = Metric
-        fields = ['name', 'source_code']
+        fields = '__all__'
 
 
 class NoiseForm(BtnsSubmitCancelMixing, forms.ModelForm):

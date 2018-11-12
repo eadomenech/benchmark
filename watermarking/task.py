@@ -25,7 +25,7 @@ def mainTask():
         for watermark in WatermarkImage.objects.all():
             for watermarking in Watermarking.objects.all():
                 if not SprintWatermarking.objects.filter(
-                        watermarking=watermarking.id, coverImage=cover,
+                        watermarking=watermarking.id, cover_image=cover,
                         watermark=watermark).exists():
                     # subprocess
                     ext = str(cover.cover_image).split('.')[-1]
@@ -40,7 +40,7 @@ def mainTask():
                         shell=True
                     )
                     SprintWatermarking.objects.create(
-                        watermarking=watermarking, coverImage=cover,
+                        watermarking=watermarking, cover_image=cover,
                         watermark=watermark,
                         watermarked_image=watermarked_image
                     )
@@ -60,12 +60,13 @@ def mainTask():
                     #         print(line)
                     # else:
                     #     sprint = SprintWatermarking.objects.create(
-                    #         watermarking=watermarking, coverImage=cover,
+                    #         watermarking=watermarking, cover_image=cover,
                     #         watermark=watermark
                     #     )
                 sprint = get_object_or_404(
                     SprintWatermarking, watermarking=watermarking.id,
-                    coverImage=cover, watermark=watermark)
+                    cover_image=cover, watermark=watermark)
+                # Aplicando los distintos tipos de ruidos
                 for noise in Noise.objects.all():
                     if not NoiseSprintWatermarking.objects.filter(
                             noise=noise, sprintWatermarking=sprint).exists():
@@ -83,4 +84,19 @@ def mainTask():
                         NoiseSprintWatermarking.objects.create(
                             noise=noise, sprintWatermarking=sprint,
                             watermarked_image_with_noise=noised_image)
+                # Calculando metricas a las watermarked images
+                for metric in Metric.objects.filter(metric_type='1'):
+                    if not MetricSprintWatermarking.objects.filter(
+                            metric=metric, sprintWatermarking=sprint).exists():
+                        # subprocess
+                        value = subprocess.call(
+                            [
+                                'python media/' + str(metric.source_code) +
+                                ' -i media/' + str(sprint.cover_image.cover_image) +
+                                ' -w media/' + str(sprint.watermarked_image)],
+                            shell=True
+                        )
+                        MetricSprintWatermarking.objects.create(
+                            metric=metric, sprintWatermarking=sprint,
+                            value=value)
     return 'Success!'
