@@ -6,8 +6,10 @@ import sys
 from PIL import Image
 
 
-def noising(image):
-    return image
+def noising(input_filename, output_filename):
+    input_image = Image.open(input_filename)
+    input_image.save(output_filename, quality=100)
+    pass
 
 
 def main(args):
@@ -32,9 +34,7 @@ def main(args):
     print('REMAINING :', remainder)
 
     if input_filename and output_filename:
-        image = Image.open(input_filename)
-        image_with_noise = noising(image)
-        image_with_noise.save(output_filename)
+        noising(input_filename, output_filename)
     else:
         print('input_filename or output_filename are None')
 

@@ -16,7 +16,6 @@ from .task import mainTask
 
 
 def index(request):
-    mainTask.delay()
     return render(request, 'watermarking/index.html')
 
 
@@ -182,9 +181,10 @@ class CreateNoise(FormActionMixin, CreateView):
     form_class = NoiseForm
 
     def form_valid(self, form):
-        metric = form.save(commit=False)
+        noise = form.save(commit=False)
         try:
-            metric.save()
+            noise.save()
+            mainTask.delay()
             return super(CreateNoise, self).form_valid(form)
         except Exception as e:
             form.add_error(None, e)
