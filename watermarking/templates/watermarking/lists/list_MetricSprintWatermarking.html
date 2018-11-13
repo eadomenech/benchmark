@@ -47,9 +47,21 @@
                 {% for w in object_list %}
                 <tr>
                     <td>{{ w.sprintWatermarking.watermarking.name }}</td>
-                    <td>{{ w.sprintWatermarking.cover_image.name }}</td>
-                    <td>{{ w.sprintWatermarking.watermark.name }}</td>
-                    <td>{{ w.sprintWatermarking.watermarked_image }}</td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.sprintWatermarking.cover_image.cover_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
+                          <i> {{ w.sprintWatermarking.cover_image.name }} </i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.sprintWatermarking.watermark.watermark_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
+                          <i> {{ w.sprintWatermarking.watermark.name }} </i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.sprintWatermarking.watermarked_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
+                          <i> {{ w.sprintWatermarking.watermarked_image }} </i>
+                      </a>
+                    </td>
                     <td>{{ w.metric.name }}</td>
                     <td>{{ w.value }}</td>
                 </tr>
