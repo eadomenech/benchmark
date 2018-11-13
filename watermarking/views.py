@@ -9,7 +9,7 @@ from django.views.generic.edit import (
 
 from .models import (
     Watermarking, CoverImage, WatermarkImage, Metric, Noise,
-    SprintWatermarking)
+    SprintWatermarking, MetricSprintWatermarking)
 
 from .forms import (
     WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm,
@@ -200,5 +200,15 @@ class ListSprintWatermarking(ListView):
     template_name = 'watermarking/lists/list_SprintWatermarking.html'
 
     def get_queryset(self):
-        """Return the watermarking methods."""
+        """Return sprints."""
         return SprintWatermarking.objects.all()
+
+
+# Metric Sprint Watermarking Views
+class ListMetricSprintWatermarking(ListView):
+    template_name = 'watermarking/lists/list_MetricSprintWatermarking.html'
+
+    def get_queryset(self):
+        """Return metric sprint."""
+        return MetricSprintWatermarking.objects.all().order_by(
+            '-value', 'metric')

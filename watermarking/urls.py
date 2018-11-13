@@ -46,4 +46,7 @@ urlpatterns = [
     path(
         'sprints', views.ListSprintWatermarking.as_view(),
         name='sprints'),
+    path(
+        'watermarked_result', views.ListMetricSprintWatermarking.as_view(),
+        name='watermarked_result'),
 ]
