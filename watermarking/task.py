@@ -15,7 +15,9 @@ import subprocess
 
 @shared_task
 def mainTask():
-    list_dir = ['media/watermarked_images/', 'media/noised_images/']
+    list_dir = [
+        'media/watermarked_images/', 'media/noised_images/',
+        'media/watermarks_with_noise/']
     for i in list_dir:
         try:
             os.stat(i)
@@ -80,4 +82,38 @@ def mainTask():
                         MetricSprintWatermarking.objects.create(
                             metric=metric, sprintWatermarking=sprint,
                             value=float(p.stdout))
+
+    # Calculando metricas a las watermark images
+    for noiseSprint in NoiseSprintWatermarking.objects.all():
+        for metric in Metric.objects.filter(metric_type='2'):
+            if not MetricNoiseSprintWatermarking.objects.filter(
+                    metric=metric,
+                    noiseSprintWatermarking=noiseSprint).exists():
+                # subprocess
+                ext = str(
+                    noiseSprint.sprintWatermarking.watermark.watermark_image
+                ).split('.')[-1]
+                filename = "%s.%s" % (uuid.uuid4(), ext)
+                watermark_with_noise = 'watermarks_with_noise/'+filename
+                subprocess.run(
+                    [
+                        'python media/' + str(noiseSprint.sprintWatermarking.watermarking.extract_code) +
+                        ' -i media/' + str(
+                            noiseSprint.watermarked_image_with_noise) +
+                        ' -w media/' + str(
+                            noiseSprint.sprintWatermarking.watermark.watermark_image) +
+                        ' -o media/' + watermark_with_noise],
+                    shell=True
+                )
+                p = subprocess.run(
+                    [
+                        'python media/' + str(metric.source_code) +
+                        ' -i media/' + str(
+                            noiseSprint.sprintWatermarking.watermark.watermark_image) +
+                        ' -w media/' + watermark_with_noise],
+                    stdout=subprocess.PIPE, shell=True
+                )
+                MetricNoiseSprintWatermarking.objects.create(
+                    metric=metric, noiseSprintWatermarking=noiseSprint,
+                    value=float(p.stdout))
     return 'Success!'

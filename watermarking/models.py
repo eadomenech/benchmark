@@ -29,6 +29,11 @@ class Watermarking(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['py'],
             message="Please upload '.py' files only.")])
+    extract_code = models.FileField(
+        upload_to=random_source_code_name,
+        validators=[FileExtensionValidator(
+            allowed_extensions=['py'],
+            message="Please upload '.py' files only.")])
 
     def __str__(self):
         return self.name

@@ -10,10 +10,6 @@ def insert(cover_image, watermark_image):
     return cover_image
 
 
-def extract(watermarking_image, cover_image=None, watermark_image=None):
-    return watermark_image
-
-
 def main(args):
     input_filename = None
     watermark_filename = None
@@ -34,18 +30,11 @@ def main(args):
         elif opt in ('-o', '--output'):
             output_filename = arg
 
-    print('INPUT    :', input_filename)
-    print('WATERMARK    :', watermark_filename)
-    print('OUTPUT    :', output_filename)
-    print('REMAINING :', remainder)
-
     if input_filename and watermark_filename:
         cover_image = Image.open(input_filename)
         watermark_image = Image.open(watermark_filename)
         watermarked_image = insert(cover_image, watermark_image)
         watermarked_image.save(output_filename, quality='keep')
-    else:
-        print('input_filename and watermark_filename not None')
 
     return 0
 

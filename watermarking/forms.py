@@ -21,7 +21,7 @@ class BtnsSubmitCancelMixing(object):
 class WatermarkingForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = Watermarking
-        fields = ['name', 'created_at', 'paper', 'source_code']
+        fields = '__all__'
 
 
 class CoverImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
