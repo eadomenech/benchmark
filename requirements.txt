@@ -4,6 +4,9 @@ subprocess32
 # PIL Trabajo con imágenes
 pillow==5.3
 
+# MatPlotLib
+matplotlib
+
 # Django
 Django==2.0
 
