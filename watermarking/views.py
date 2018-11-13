@@ -7,7 +7,10 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import (
     CreateView, DeleteView, FormView, UpdateView)
 
-from .models import Watermarking, CoverImage, WatermarkImage, Metric, Noise
+from .models import (
+    Watermarking, CoverImage, WatermarkImage, Metric, Noise,
+    SprintWatermarking)
+
 from .forms import (
     WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm,
     NoiseForm)
@@ -190,3 +193,12 @@ class CreateNoise(FormActionMixin, CreateView):
         except Exception as e:
             form.add_error(None, e)
         return super(CreateNoise, self).form_invalid(form)
+
+
+# Sprint Watermarking Views
+class ListSprintWatermarking(ListView):
+    template_name = 'watermarking/lists/list_SprintWatermarking.html'
+
+    def get_queryset(self):
+        """Return the watermarking methods."""
+        return SprintWatermarking.objects.all()

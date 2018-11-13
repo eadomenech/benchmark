@@ -43,4 +43,7 @@ urlpatterns = [
     path(
         'newNoise', views.CreateNoise.as_view(),
         name='newNoise'),
+    path(
+        'sprints', views.ListSprintWatermarking.as_view(),
+        name='sprints'),
 ]
