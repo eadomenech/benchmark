@@ -27,16 +27,10 @@ def main(args):
         elif opt in ('-w', '--watermarked'):
             watermarked_filename = arg
 
-    print('IMAGE    :', cover_filename)
-    print('WATERMARKED    :', watermarked_filename)
-    print('REMAINING :', remainder)
-
     if cover_filename and watermarked_filename:
         cover_image = Image.open(cover_filename)
         watermarked_image = Image.open(watermarked_filename)
-        return calc_metric(cover_image, watermarked_image)
-    else:
-        print('input_filename and watermark_filename not None')
+        print(calc_metric(cover_image, watermarked_image))
 
     return 0
 

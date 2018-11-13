@@ -44,8 +44,8 @@ class CoverImage(models.Model):
     cover_image = models.ImageField(
         upload_to=random_cover_image_name,
         validators=[FileExtensionValidator(
-            allowed_extensions=['jpg'],
-            message="Please upload '.jpg' files only.")])
+            allowed_extensions=['jpg', 'bmp', 'png'],
+            message="Please upload '.jpg', '.png' or '.bmp' files only.")])
 
     def __str__(self):
         return self.uuid
