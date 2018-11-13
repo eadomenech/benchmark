@@ -43,7 +43,7 @@ def main(args):
         cover_image = Image.open(input_filename)
         watermark_image = Image.open(watermark_filename)
         watermarked_image = insert(cover_image, watermark_image)
-        watermarked_image.save(output_filename, quality=100)
+        watermarked_image.save(output_filename, quality='keep')
     else:
         print('input_filename and watermark_filename not None')
 
