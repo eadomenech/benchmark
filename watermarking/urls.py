@@ -49,4 +49,7 @@ urlpatterns = [
     path(
         'watermarked_result', views.ListMetricSprintWatermarking.as_view(),
         name='watermarked_result'),
+    path(
+        'watermarked_noised', views.ListNoiseSprintWatermarking.as_view(),
+        name='watermarked_noised'),
 ]
