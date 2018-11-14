@@ -59,6 +59,15 @@
             <li><a href="{% static 'watermarking/extract.py' %}">Extract Method</a></li>
             <li><a href="{% static 'watermarking/metric.py' %}">Metric</a></li>
             <li><a href="{% static 'watermarking/noise.py' %}">Noise</a></li>
+            <li><a>
+                <i class="menu-icon">
+                <img src="{% static 'core/images/datahiding_icono.png' %}" />
+              </i> Metrics <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="{% static 'watermarking/metrics/PSNR.py' %}">PSNR</a></li>
+                  <li><a href="{% static 'watermarking/metrics/BER.py' %}">BER</a></li>
+                </ul>
+            </li>
           </ul>
         </li>
       </ul>
