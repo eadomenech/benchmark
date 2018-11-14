@@ -5,7 +5,6 @@ import sys
 
 import math
 from PIL import Image
-import imageio
 import numpy as np
 from scipy import misc
 
@@ -52,10 +51,10 @@ def orth_matrix(x):
 
 
 def multiply_matrix(A, B, C):
-    if C != []:
-        return np.dot(np.dot(A, B), C)
-    else:
+    if C == []:
         return np.dot(A, B)
+    else:
+        return np.dot(np.dot(A, B), C)
 
 
 # This class calculte the discrete orthogonal moments
@@ -348,7 +347,7 @@ def insert(cover_filename, watermark_filename):
     # Key input
     key = "N;fpr-y7hrcMste4"
     # Load cover image (array)
-    cover_array = misc.fromimage(Image.open(cover_filename))
+    cover_array = np.asarray(Image.open(cover_filename))
     # Secrete bits
     bits_save = "00000000000000000000000000000000000000000101010101010100101010101010101001010101111111111111111111111100000000000000000000000000000000000011111111111111111111111111111000000000000000001010101010101010101100000000000000000000000000000000000000000001111111111111111111111111111111111111111111111111111111111100000000000000000"
     # Blue plane
