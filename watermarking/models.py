@@ -120,6 +120,9 @@ class SprintWatermarking(models.Model):
     watermark = models.ForeignKey(WatermarkImage, on_delete=models.CASCADE)
     watermarked_image = models.ImageField()
 
+    class Meta:
+        unique_together = ("watermarking", "cover_image", "watermark")
+
     def __str__(self):
         return str(self.watermarking) + '_' + str(self.cover_image) + '_' + str(self.watermark)
 
@@ -129,6 +132,9 @@ class MetricSprintWatermarking(models.Model):
     sprintWatermarking = models.ForeignKey(
         SprintWatermarking, on_delete=models.CASCADE)
     value = models.FloatField()
+
+    class Meta:
+        unique_together = ("metric", "sprintWatermarking")
 
     def __str__(self):
         return str(self.metric) + '_' + str(self.sprintWatermarking)
@@ -140,6 +146,9 @@ class NoiseSprintWatermarking(models.Model):
         SprintWatermarking, on_delete=models.CASCADE)
     watermarked_image_with_noise = models.ImageField()
 
+    class Meta:
+        unique_together = ("noise", "sprintWatermarking")
+
     def __str__(self):
         return str(self.noise) + '_' + str(self.sprintWatermarking)
 
@@ -149,6 +158,9 @@ class MetricNoiseSprintWatermarking(models.Model):
     noiseSprintWatermarking = models.ForeignKey(
         NoiseSprintWatermarking, on_delete=models.CASCADE)
     value = models.FloatField()
+
+    class Meta:
+        unique_together = ("metric", "noiseSprintWatermarking")
 
     def __str__(self):
         return str(self.metric) + '_' + str(self.noiseSprintWatermarking)

@@ -3,6 +3,7 @@
 import os
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
 
 import uuid
 
@@ -41,11 +42,14 @@ def mainTask():
                             ' -o media/' + watermarked_image],
                         shell=True
                     )
-                    SprintWatermarking.objects.create(
-                        watermarking=watermarking, cover_image=cover,
-                        watermark=watermark,
-                        watermarked_image=watermarked_image
-                    )
+                    try:
+                        SprintWatermarking.objects.create(
+                            watermarking=watermarking, cover_image=cover,
+                            watermark=watermark,
+                            watermarked_image=watermarked_image
+                        )
+                    except IntegrityError:
+                        pass
                 sprint = get_object_or_404(
                     SprintWatermarking, watermarking=watermarking.id,
                     cover_image=cover, watermark=watermark)
@@ -64,9 +68,12 @@ def mainTask():
                                 ' -o media/' + noised_image],
                             shell=True
                         )
-                        NoiseSprintWatermarking.objects.create(
-                            noise=noise, sprintWatermarking=sprint,
-                            watermarked_image_with_noise=noised_image)
+                        try:
+                            NoiseSprintWatermarking.objects.create(
+                                noise=noise, sprintWatermarking=sprint,
+                                watermarked_image_with_noise=noised_image)
+                        except IntegrityError:
+                            pass
                 # Calculando metricas a las watermarked images
                 for metric in Metric.objects.filter(metric_type='1'):
                     if not MetricSprintWatermarking.objects.filter(
@@ -79,9 +86,12 @@ def mainTask():
                                 ' -w media/' + str(sprint.watermarked_image)],
                             stdout=subprocess.PIPE, shell=True
                         )
-                        MetricSprintWatermarking.objects.create(
-                            metric=metric, sprintWatermarking=sprint,
-                            value=float(p.stdout))
+                        try:
+                            MetricSprintWatermarking.objects.create(
+                                metric=metric, sprintWatermarking=sprint,
+                                value=float(p.stdout))
+                        except IntegrityError:
+                            pass
 
     # Calculando metricas a las watermark images
     for noiseSprint in NoiseSprintWatermarking.objects.all():
@@ -113,7 +123,10 @@ def mainTask():
                         ' -w media/' + watermark_with_noise],
                     stdout=subprocess.PIPE, shell=True
                 )
-                MetricNoiseSprintWatermarking.objects.create(
-                    metric=metric, noiseSprintWatermarking=noiseSprint,
-                    value=float(p.stdout))
+                try:
+                    MetricNoiseSprintWatermarking.objects.create(
+                        metric=metric, noiseSprintWatermarking=noiseSprint,
+                        value=float(p.stdout))
+                except IntegrityError:
+                    pass
     return 'Success!'
