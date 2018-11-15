@@ -30,8 +30,7 @@ def get_dwt(chromosome):
 
 def zigzag(n):
     indexorder = sorted(
-        ((x, y) for x in range(n) for y in range(n)),
-        key=lambda (x, y): (x+y, -y if (x+y) % 2 else y))
+        ((x, y) for x in range(n) for y in range(n)), key=lambda (x, y): (x+y, -y if (x+y) % 2 else y))
     return {index: n for n, index in enumerate(indexorder)}
 
 
