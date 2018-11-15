@@ -16,8 +16,8 @@ def calc_metric(watermark, watermark_with_noise):
 
 
 def BER(image1, image2):
-    img1 = image1.convert('L')
-    img2 = image2.convert('L')
+    img1 = image1.convert('1')
+    img2 = image2.convert('1')
     array1 = np.asarray(img1)
     array2 = np.asarray(img2)
     S = 0
