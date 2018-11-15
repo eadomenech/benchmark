@@ -349,7 +349,16 @@ def insert(cover_filename, watermark_filename):
     # Load cover image (array)
     cover_array = misc.fromimage(Image.open(cover_filename))
     # Secrete bits
-    bits_save = "00000000000000000000000000000000000000000101010101010100101010101010101001010101111111111111111111111100000000000000000000000000000000000011111111111111111111111111111000000000000000001010101010101010101100000000000000000000000000000000000000000001111111111111111111111111111111111111111111111111111111111100000000000000000"
+    watermark = Image.open(watermark_filename).convert("1")
+    watermark_array = misc.fromimage(watermark)  # Array of watermark
+    len_of_watermark = watermark_array.size
+    list_bit_of_watermark = watermark_array.reshape((1, len_of_watermark))[0]
+    bits_save = ""
+    for bit in list_bit_of_watermark:
+        if bit == 0:
+            bits_save += "0"
+        else:
+            bits_save += "1"
     # Blue plane
     B = cover_array[:, :, 2]
     # Initial values
