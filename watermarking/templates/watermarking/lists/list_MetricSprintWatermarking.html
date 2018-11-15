@@ -63,7 +63,11 @@
                       </a>
                     </td>
                     <td>{{ w.metric.name }}</td>
-                    <td>{{ w.value }}</td>
+                    {% if w.value == -1 %}
+                        <td>Processing</td>
+                    {% else%}
+                        <td>{{ w.value }}</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
               </table>

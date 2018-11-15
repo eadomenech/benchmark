@@ -10,6 +10,8 @@ import numpy as np
 
 
 def calc_metric(watermark, watermark_with_noise):
+    if watermark.size != watermark_with_noise.size:
+        return -2
     return BER(watermark, watermark_with_noise)
 
 

@@ -8,6 +8,8 @@ from PIL import Image
 
 
 def calc_metric(cover_image, watermarked_image):
+    if cover_image.size != watermarked_image.size:
+        return -2
     return PSNR_RGB(cover_image, watermarked_image)
 
 
