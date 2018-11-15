@@ -129,6 +129,7 @@ def mainTask():
                         stdout=subprocess.PIPE, shell=True
                     )
                     m.value = float(p.stdout)
+                    m.save()
                 except IntegrityError:
                     pass
     return 'Success!'
