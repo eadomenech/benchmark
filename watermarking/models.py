@@ -145,8 +145,9 @@ class NoiseSprintWatermarking(models.Model):
     sprintWatermarking = models.ForeignKey(
         SprintWatermarking, on_delete=models.CASCADE)
     watermarked_image_with_noise = models.ImageField(
-        default='no-image-icon.jpg'
-    )
+        default='no-image-icon.jpg')
+    watermark_image_with_noise = models.ImageField(
+        default='no-image-icon.jpg')
 
     class Meta:
         unique_together = ("noise", "sprintWatermarking")

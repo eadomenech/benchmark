@@ -52,4 +52,7 @@ urlpatterns = [
     path(
         'watermarked_noised', views.ListNoiseSprintWatermarking.as_view(),
         name='watermarked_noised'),
+    path(
+        'watermark_result', views.ListMetricNoiseSprintWatermarking.as_view(),
+        name='watermark_result'),
 ]

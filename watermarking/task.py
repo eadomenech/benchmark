@@ -73,6 +73,24 @@ def mainTask():
                             )
                             n.watermarked_image_with_noise = noised_image
                             n.save()
+
+                            ext = str(
+                                n.sprintWatermarking.watermark.watermark_image
+                            ).split('.')[-1]
+                            filename = "%s.%s" % (uuid.uuid4(), ext)
+                            watermark_with_noise = 'watermarks_with_noise/'+filename
+                            subprocess.run(
+                                [
+                                    'python media/' + str(n.sprintWatermarking.watermarking.extract_code) +
+                                    ' -i media/' + str(
+                                        n.watermarked_image_with_noise) +
+                                    ' -w media/' + str(
+                                        n.sprintWatermarking.watermark.watermark_image) +
+                                    ' -o media/' + watermark_with_noise],
+                                shell=True
+                            )
+                            n.watermark_image_with_noise = watermark_with_noise
+                            n.save()
                         except IntegrityError:
                             pass
                 # Calculando metricas a las watermarked images
@@ -105,27 +123,12 @@ def mainTask():
                     m = MetricNoiseSprintWatermarking.objects.create(
                         metric=metric, noiseSprintWatermarking=noiseSprint)
                     # subprocess
-                    ext = str(
-                        noiseSprint.sprintWatermarking.watermark.watermark_image
-                    ).split('.')[-1]
-                    filename = "%s.%s" % (uuid.uuid4(), ext)
-                    watermark_with_noise = 'watermarks_with_noise/'+filename
-                    subprocess.run(
-                        [
-                            'python media/' + str(noiseSprint.sprintWatermarking.watermarking.extract_code) +
-                            ' -i media/' + str(
-                                noiseSprint.watermarked_image_with_noise) +
-                            ' -w media/' + str(
-                                noiseSprint.sprintWatermarking.watermark.watermark_image) +
-                            ' -o media/' + watermark_with_noise],
-                        shell=True
-                    )
                     p = subprocess.run(
                         [
                             'python media/' + str(metric.source_code) +
                             ' -i media/' + str(
                                 noiseSprint.sprintWatermarking.watermark.watermark_image) +
-                            ' -w media/' + watermark_with_noise],
+                            ' -w media/' + str(noiseSprint.watermark_image_with_noise)],
                         stdout=subprocess.PIPE, shell=True
                     )
                     m.value = float(p.stdout)
