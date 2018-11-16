@@ -13,6 +13,9 @@ from .models import *
 from subprocess import Popen, PIPE
 import subprocess
 
+from celery.utils.log import get_task_logger
+logger = get_task_logger(__name__)
+
 
 @shared_task
 def mainTask():
@@ -23,6 +26,7 @@ def mainTask():
         try:
             os.stat(i)
         except:
+            logger.info('Creating %s' % (i))
             os.mkdir(i)
     for cover in CoverImage.objects.all():
         for watermark in WatermarkImage.objects.all():
@@ -34,6 +38,7 @@ def mainTask():
                         s = SprintWatermarking.objects.create(
                             watermarking=watermarking, cover_image=cover,
                             watermark=watermark)
+                        logger.info('Creating SprintWatermarking: %s' % (s))
                         # subprocess
                         ext = str(cover.cover_image).split('.')[-1]
                         filename = "%s.%s" % (uuid.uuid4(), ext)
@@ -48,6 +53,8 @@ def mainTask():
                         )
                         s.watermarked_image = watermarked_image
                         s.save()
+                        logger.info(
+                            'Updating watermarked_image of SprintWatermarking: %s' % (s.watermarked_image))
                     except IntegrityError:
                         pass
                 sprint = get_object_or_404(
@@ -60,6 +67,8 @@ def mainTask():
                         try:
                             n = NoiseSprintWatermarking.objects.create(
                                 noise=noise, sprintWatermarking=sprint)
+                            logger.info(
+                                'Creating NoiseSprintWatermarking: %s' % (n))
                             # subprocess
                             ext = str(cover.cover_image).split('.')[-1]
                             filename = "%s.%s" % (uuid.uuid4(), ext)
@@ -73,6 +82,8 @@ def mainTask():
                             )
                             n.watermarked_image_with_noise = noised_image
                             n.save()
+                            logger.info(
+                                'Updating watermarked_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermarked_image_with_noise))
 
                             ext = str(
                                 n.sprintWatermarking.watermark.watermark_image
@@ -91,48 +102,56 @@ def mainTask():
                             )
                             n.watermark_image_with_noise = watermark_with_noise
                             n.save()
+                            logger.info(
+                                'Updating watermark_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermark_image_with_noise))
                         except IntegrityError:
                             pass
                 # Calculando metricas a las watermarked images
                 for metric in Metric.objects.filter(metric_type='1'):
                     if not MetricSprintWatermarking.objects.filter(
                             metric=metric, sprintWatermarking=sprint).exists():
-                        try:
-                            me = MetricSprintWatermarking.objects.create(
-                                metric=metric, sprintWatermarking=sprint)
-                            # subprocess
-                            p = subprocess.run(
-                                [
-                                    'python media/' + str(metric.source_code) +
-                                    ' -i media/' + str(sprint.cover_image.cover_image) +
-                                    ' -w media/' + str(sprint.watermarked_image)],
-                                stdout=subprocess.PIPE, shell=True
-                            )
-                            me.value = float(p.stdout)
-                            me.save()
-                        except:
-                            pass
+                        if sprint.watermarked_image != 'no-image-icon.jpg':
+                            try:
+                                me = MetricSprintWatermarking.objects.create(
+                                    metric=metric, sprintWatermarking=sprint)
+                                logger.info(
+                                    'Creating MetricSprintWatermarking: %s' % (me))
+                                # subprocess
+                                p = subprocess.run(
+                                    [
+                                        'python media/' + str(metric.source_code) +
+                                        ' -i media/' + str(sprint.cover_image.cover_image) +
+                                        ' -w media/' + str(sprint.watermarked_image)],
+                                    stdout=subprocess.PIPE, shell=True
+                                )
+                                me.value = float(p.stdout)
+                                me.save()
+                                logger.info(
+                                    'Updating value of MetricSprintWatermarking(%s): %s' % (me, me.value))
+                            except:
+                                pass
 
     # Calculando metricas a las watermark images
     for noiseSprint in NoiseSprintWatermarking.objects.all():
         for metric in Metric.objects.filter(metric_type='2'):
-            if not MetricNoiseSprintWatermarking.objects.filter(
-                    metric=metric,
-                    noiseSprintWatermarking=noiseSprint).exists():
-                try:
-                    m = MetricNoiseSprintWatermarking.objects.create(
-                        metric=metric, noiseSprintWatermarking=noiseSprint)
-                    # subprocess
-                    p = subprocess.run(
-                        [
-                            'python media/' + str(metric.source_code) +
-                            ' -i media/' + str(
-                                noiseSprint.sprintWatermarking.watermark.watermark_image) +
-                            ' -w media/' + str(noiseSprint.watermark_image_with_noise)],
-                        stdout=subprocess.PIPE, shell=True
-                    )
-                    m.value = float(p.stdout)
-                    m.save()
-                except IntegrityError:
-                    pass
+            if noiseSprint.watermarked_image_with_noise != 'no-image-icon.jpg' and noiseSprint.watermark_image_with_noise != 'no-image-icon1.png':
+                if not MetricNoiseSprintWatermarking.objects.filter(
+                        metric=metric,
+                        noiseSprintWatermarking=noiseSprint).exists():
+                    try:
+                        m = MetricNoiseSprintWatermarking.objects.create(
+                            metric=metric, noiseSprintWatermarking=noiseSprint)
+                        # subprocess
+                        p = subprocess.run(
+                            [
+                                'python media/' + str(metric.source_code) +
+                                ' -i media/' + str(
+                                    noiseSprint.sprintWatermarking.watermark.watermark_image) +
+                                ' -w media/' + str(noiseSprint.watermark_image_with_noise)],
+                            stdout=subprocess.PIPE, shell=True
+                        )
+                        m.value = float(p.stdout)
+                        m.save()
+                    except IntegrityError:
+                        pass
     return 'Success!'
