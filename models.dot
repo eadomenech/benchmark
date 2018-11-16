@@ -1,6 +1,6 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
-  // Created: 2018-11-11 20:56
+  // Created: 2018-11-16 09:18
   // Cli Options: watermarking
 
   fontname = "Helvetica"
@@ -41,6 +41,14 @@ digraph model_graph {
     <FONT FACE="Helvetica ">created_at</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Helvetica ">DateField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Helvetica ">extract_code</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Helvetica ">FileField</FONT>
     </TD></TR>
   
   
@@ -238,6 +246,14 @@ digraph model_graph {
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Helvetica ">metric_type</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Helvetica ">CharField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
     <FONT FACE="Helvetica ">name</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Helvetica ">CharField</FONT>
@@ -280,7 +296,7 @@ digraph model_graph {
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
-    <FONT FACE="Helvetica Bold">coverImage</FONT>
+    <FONT FACE="Helvetica Bold">cover_image</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
     </TD></TR>
@@ -388,6 +404,14 @@ digraph model_graph {
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Helvetica ">watermark_image_with_noise</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Helvetica ">ImageField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
     <FONT FACE="Helvetica ">watermarked_image_with_noise</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Helvetica ">ImageField</FONT>
@@ -448,7 +472,7 @@ digraph model_graph {
   [label="watermarking (sprintwatermarking)"] [arrowhead=none, arrowtail=dot, dir=both];
 
   watermarking_models_SprintWatermarking -> watermarking_models_CoverImage
-  [label="coverImage (sprintwatermarking)"] [arrowhead=none, arrowtail=dot, dir=both];
+  [label="cover_image (sprintwatermarking)"] [arrowhead=none, arrowtail=dot, dir=both];
 
   watermarking_models_SprintWatermarking -> watermarking_models_WatermarkImage
   [label="watermark (sprintwatermarking)"] [arrowhead=none, arrowtail=dot, dir=both];
