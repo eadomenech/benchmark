@@ -5,7 +5,7 @@ subprocess32
 pillow==5.3
 
 # MatPlotLib
-#matplotlib
+matplotlib
 
 # Scipy
 scipy==1.1.0
@@ -25,13 +25,13 @@ django-celery-beat
 # django-celery
 
 # Extensions
-#django-extensions
+django-extensions
 
 #reportes pdf
-#reportlab==3.5
+reportlab==3.5
 
 # Unir pdf
-#PyPDF2
+PyPDF2
 
 # Pruebas unitarias
 #pytest < 3.3.0
