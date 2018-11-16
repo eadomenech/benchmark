@@ -118,7 +118,7 @@ class SprintWatermarking(models.Model):
     watermarking = models.ForeignKey(Watermarking, on_delete=models.CASCADE)
     cover_image = models.ForeignKey(CoverImage, on_delete=models.CASCADE)
     watermark = models.ForeignKey(WatermarkImage, on_delete=models.CASCADE)
-    watermarked_image = models.ImageField(default='no-image-icon.jpg')
+    watermarked_image = models.ImageField(null=True)
 
     class Meta:
         unique_together = ("watermarking", "cover_image", "watermark")
@@ -144,10 +144,8 @@ class NoiseSprintWatermarking(models.Model):
     noise = models.ForeignKey(Noise, on_delete=models.CASCADE)
     sprintWatermarking = models.ForeignKey(
         SprintWatermarking, on_delete=models.CASCADE)
-    watermarked_image_with_noise = models.ImageField(
-        default='no-image-icon.jpg')
-    watermark_image_with_noise = models.ImageField(
-        default='no-image-icon1.png')
+    watermarked_image_with_noise = models.ImageField(null=True)
+    watermark_image_with_noise = models.ImageField(null=True)
 
     class Meta:
         unique_together = ("noise", "sprintWatermarking")

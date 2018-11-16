@@ -64,53 +64,54 @@ def mainTask():
                 for noise in Noise.objects.all():
                     if not NoiseSprintWatermarking.objects.filter(
                             noise=noise, sprintWatermarking=sprint).exists():
-                        try:
-                            n = NoiseSprintWatermarking.objects.create(
-                                noise=noise, sprintWatermarking=sprint)
-                            logger.info(
-                                'Creating NoiseSprintWatermarking: %s' % (n))
-                            # subprocess
-                            ext = str(cover.cover_image).split('.')[-1]
-                            filename = "%s.%s" % (uuid.uuid4(), ext)
-                            noised_image = 'noised_images/'+filename
-                            subprocess.call(
-                                [
-                                    'python media/' + str(noise.source_code) +
-                                    ' -i media/' + str(sprint.watermarked_image) +
-                                    ' -o media/' + noised_image],
-                                shell=True
-                            )
-                            n.watermarked_image_with_noise = noised_image
-                            n.save()
-                            logger.info(
-                                'Updating watermarked_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermarked_image_with_noise))
+                        if sprint.watermarked_image:
+                            try:
+                                n = NoiseSprintWatermarking.objects.create(
+                                    noise=noise, sprintWatermarking=sprint)
+                                logger.info(
+                                    'Creating NoiseSprintWatermarking: %s' % (n))
+                                # subprocess
+                                ext = str(cover.cover_image).split('.')[-1]
+                                filename = "%s.%s" % (uuid.uuid4(), ext)
+                                noised_image = 'noised_images/'+filename
+                                subprocess.call(
+                                    [
+                                        'python media/' + str(noise.source_code) +
+                                        ' -i media/' + str(sprint.watermarked_image) +
+                                        ' -o media/' + noised_image],
+                                    shell=True
+                                )
+                                n.watermarked_image_with_noise = noised_image
+                                n.save()
+                                logger.info(
+                                    'Updating watermarked_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermarked_image_with_noise))
 
-                            ext = str(
-                                n.sprintWatermarking.watermark.watermark_image
-                            ).split('.')[-1]
-                            filename = "%s.%s" % (uuid.uuid4(), ext)
-                            watermark_with_noise = 'watermarks_with_noise/'+filename
-                            subprocess.run(
-                                [
-                                    'python media/' + str(n.sprintWatermarking.watermarking.extract_code) +
-                                    ' -i media/' + str(
-                                        n.watermarked_image_with_noise) +
-                                    ' -w media/' + str(
-                                        n.sprintWatermarking.watermark.watermark_image) +
-                                    ' -o media/' + watermark_with_noise],
-                                shell=True
-                            )
-                            n.watermark_image_with_noise = watermark_with_noise
-                            n.save()
-                            logger.info(
-                                'Updating watermark_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermark_image_with_noise))
-                        except IntegrityError:
-                            pass
+                                ext = str(
+                                    n.sprintWatermarking.watermark.watermark_image
+                                ).split('.')[-1]
+                                filename = "%s.%s" % (uuid.uuid4(), ext)
+                                watermark_with_noise = 'watermarks_with_noise/'+filename
+                                subprocess.run(
+                                    [
+                                        'python media/' + str(n.sprintWatermarking.watermarking.extract_code) +
+                                        ' -i media/' + str(
+                                            n.watermarked_image_with_noise) +
+                                        ' -w media/' + str(
+                                            n.sprintWatermarking.watermark.watermark_image) +
+                                        ' -o media/' + watermark_with_noise],
+                                    shell=True
+                                )
+                                n.watermark_image_with_noise = watermark_with_noise
+                                n.save()
+                                logger.info(
+                                    'Updating watermark_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermark_image_with_noise))
+                            except IntegrityError:
+                                pass
                 # Calculando metricas a las watermarked images
                 for metric in Metric.objects.filter(metric_type='1'):
                     if not MetricSprintWatermarking.objects.filter(
                             metric=metric, sprintWatermarking=sprint).exists():
-                        if sprint.watermarked_image != 'no-image-icon.jpg':
+                        if sprint.watermarked_image:
                             try:
                                 me = MetricSprintWatermarking.objects.create(
                                     metric=metric, sprintWatermarking=sprint)
@@ -134,7 +135,7 @@ def mainTask():
     # Calculando metricas a las watermark images
     for noiseSprint in NoiseSprintWatermarking.objects.all():
         for metric in Metric.objects.filter(metric_type='2'):
-            if noiseSprint.watermarked_image_with_noise != 'no-image-icon.jpg' and noiseSprint.watermark_image_with_noise != 'no-image-icon1.png':
+            if noiseSprint.watermarked_image_with_noise and noiseSprint.watermark_image_with_noise:
                 if not MetricNoiseSprintWatermarking.objects.filter(
                         metric=metric,
                         noiseSprintWatermarking=noiseSprint).exists():
