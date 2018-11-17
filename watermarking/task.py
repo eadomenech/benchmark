@@ -19,6 +19,7 @@ logger = get_task_logger(__name__)
 
 @shared_task
 def mainTask():
+    media = "media/"
     list_dir = [
         'media/watermarked_images/', 'media/noised_images/',
         'media/watermarks_with_noise/']
@@ -43,7 +44,6 @@ def mainTask():
                         ext = str(cover.cover_image).split('.')[-1]
                         filename = "%s.%s" % (uuid.uuid4(), ext)
                         watermarked_image = 'watermarked_images/'+filename
-                        media = "media/"
                         process = subprocess.Popen(
                             [
                                 "python", media + str(watermarking.source_code),
@@ -52,15 +52,14 @@ def mainTask():
                                 "-o", media + watermarked_image],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE
                         )
-                        output = process.communicate()
+                        (stdout, stderr) = process.communicate()
                         if process.returncode == 0:
                             s.watermarked_image = watermarked_image
                             s.save()
                             logger.info(
                                 'Updating watermarked_image of SprintWatermarking: %s' % (s.watermarked_image))
                         else:
-                            logger.info(
-                                'Error in: %s' % (str(watermarking.source_code)))
+                            logger.error('Error: %s' % (stderr))
                     except IntegrityError:
                         pass
                 sprint = get_object_or_404(
@@ -80,37 +79,43 @@ def mainTask():
                                 ext = str(cover.cover_image).split('.')[-1]
                                 filename = "%s.%s" % (uuid.uuid4(), ext)
                                 noised_image = 'noised_images/'+filename
-                                subprocess.call(
+                                process = subprocess.Popen(
                                     [
-                                        'python media/' + str(noise.source_code) +
-                                        ' -i media/' + str(sprint.watermarked_image) +
-                                        ' -o media/' + noised_image],
-                                    shell=True
+                                        "python", media + str(noise.source_code),
+                                        "-i", media + str(sprint.watermarked_image),
+                                        "-o", media + noised_image],
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE
                                 )
-                                n.watermarked_image_with_noise = noised_image
-                                n.save()
-                                logger.info(
-                                    'Updating watermarked_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermarked_image_with_noise))
+                                (stdout, stderr) = process.communicate()
+                                if process.returncode == 0:
+                                    n.watermarked_image_with_noise = noised_image
+                                    n.save()
+                                    logger.info(
+                                        'Updating watermarked_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermarked_image_with_noise))
+                                else:
+                                    logger.error('Error: %s' % (stderr))
 
                                 ext = str(
                                     n.sprintWatermarking.watermark.watermark_image
                                 ).split('.')[-1]
                                 filename = "%s.%s" % (uuid.uuid4(), ext)
                                 watermark_with_noise = 'watermarks_with_noise/'+filename
-                                subprocess.run(
+                                process = subprocess.Popen(
                                     [
-                                        'python media/' + str(n.sprintWatermarking.watermarking.extract_code) +
-                                        ' -i media/' + str(
-                                            n.watermarked_image_with_noise) +
-                                        ' -w media/' + str(
-                                            n.sprintWatermarking.watermark.watermark_image) +
-                                        ' -o media/' + watermark_with_noise],
-                                    shell=True
+                                        "python", media + str(n.sprintWatermarking.watermarking.extract_code),
+                                        "-i", media + str(n.watermarked_image_with_noise),
+                                        "-w", media + str(n.sprintWatermarking.watermark.watermark_image),
+                                        "-o", media + watermark_with_noise],
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE
                                 )
-                                n.watermark_image_with_noise = watermark_with_noise
-                                n.save()
-                                logger.info(
-                                    'Updating watermark_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermark_image_with_noise))
+                                (stdout, stderr) = process.communicate()
+                                if process.returncode == 0:
+                                    n.watermark_image_with_noise = watermark_with_noise
+                                    n.save()
+                                    logger.info(
+                                        'Updating watermark_image_with_noise of NoiseSprintWatermarking(%s): %s' % (n, n.watermark_image_with_noise))
+                                else:
+                                    logger.error('Error: %s' % (stderr))
                             except IntegrityError:
                                 pass
                 # Calculando metricas a las watermarked images
@@ -124,17 +129,21 @@ def mainTask():
                                 logger.info(
                                     'Creating MetricSprintWatermarking: %s' % (me))
                                 # subprocess
-                                p = subprocess.run(
+                                process = subprocess.Popen(
                                     [
-                                        'python media/' + str(metric.source_code) +
-                                        ' -i media/' + str(sprint.cover_image.cover_image) +
-                                        ' -w media/' + str(sprint.watermarked_image)],
-                                    stdout=subprocess.PIPE, shell=True
+                                        "python", media + str(metric.source_code),
+                                        "-i", media + str(sprint.cover_image.cover_image),
+                                        "-w", media + str(sprint.watermarked_image)],
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE
                                 )
-                                me.value = float(p.stdout)
-                                me.save()
-                                logger.info(
-                                    'Updating value of MetricSprintWatermarking(%s): %s' % (me, me.value))
+                                (stdout, stderr) = process.communicate()
+                                if process.returncode == 0:
+                                    me.value = float(stdout)
+                                    me.save()
+                                    logger.info(
+                                        'Updating value of MetricSprintWatermarking(%s): %s' % (me, me.value))
+                                else:
+                                    logger.error('Error: %s' % (stderr))
                             except:
                                 pass
 
@@ -149,16 +158,21 @@ def mainTask():
                         m = MetricNoiseSprintWatermarking.objects.create(
                             metric=metric, noiseSprintWatermarking=noiseSprint)
                         # subprocess
-                        p = subprocess.run(
+                        process = subprocess.Popen(
                             [
-                                'python media/' + str(metric.source_code) +
-                                ' -i media/' + str(
-                                    noiseSprint.sprintWatermarking.watermark.watermark_image) +
-                                ' -w media/' + str(noiseSprint.watermark_image_with_noise)],
-                            stdout=subprocess.PIPE, shell=True
+                                "python", media + str(metric.source_code),
+                                "-i", media + str(noiseSprint.sprintWatermarking.watermark.watermark_image),
+                                "-w", media + str(noiseSprint.watermark_image_with_noise)],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE
                         )
-                        m.value = float(p.stdout)
-                        m.save()
+                        (stdout, stderr) = process.communicate()
+                        if process.returncode == 0:
+                            m.value = float(stdout)
+                            m.save()
+                            logger.info(
+                                'Updating value of MetricNoiseSprintWatermarking(%s): %s' % (m, m.value))
+                        else:
+                            logger.error('Error: %s' % (stderr))
                     except IntegrityError:
                         pass
     return 'Success!'
