@@ -5,8 +5,9 @@ import sys
 
 from PIL import Image
 import numpy as np
-from transforms.DqKT import DqKT
-from transforms_gpgpu.dqkt_gpgpu import DqktGPGPU
+# from transforms.DqKT import DqKT
+# from transforms_gpgpu.dqkt_gpgpu import DqktGPGPU
+from transforms.MyDCT import DCT
 from transforms.DAT import DAT
 from block_tools.BlockTools import BlockTools
 from qr_tools.MyQR62 import MyQR62
@@ -30,7 +31,7 @@ def get_dwt(chromosome):
 
 def zigzag(n):
     indexorder = sorted(
-        ((x, y) for x in range(n) for y in range(n)), key=lambda (x, y): (x+y, -y if (x+y) % 2 else y))
+        ((x, y) for x in range(n) for y in range(n)), key=lambda x, y: (x+y, -y if (x+y) % 2 else y))
     return {index: n for n, index in enumerate(indexorder)}
 
 
@@ -48,7 +49,7 @@ def get_indice(m):
 
 def insert(cover_image, watermark_image):
     from image_tools.ImageTools import ImageTools
-    dqkt = DqktGPGPU()
+    dqkt = DCT()
     myqr = MyQR62()
     dat = DAT()
     itools = ImageTools()
@@ -91,23 +92,15 @@ def insert(cover_image, watermark_image):
         import random
         v = []
         cantidad = bt_of_cover.max_blocks()
-        x, y = cover_image.size
-        izq_min = x//64
-        der_max = (x//8 - x//64)
-        arr_min = y//64
-        aba_max = (y//8 - y//64)
         while len(v) < len_of_watermark:
             val = random.randrange(cantidad)
-            fila = val/(x//8)
-            columna = val - fila*(x//8)
             if val not in v:
-                if columna > izq_min and columna < der_max and fila > y//64 and fila < aba_max:
-                    v.append(val)
+                v.append(val)
 
         # Marcar los self.len_of_watermark bloques
         for i in range(len_of_watermark):
 
-            dqkt_block = dqkt.dqkt_r(
+            dqkt_block = dqkt.dct2(
                 np.array(bt_of_cover.get_block(v[i]+1), dtype=np.float32))
 
             negative = False
@@ -123,7 +116,7 @@ def insert(cover_image, watermark_image):
 
             if negative:
                 dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] *= -1
-            idqkt_block = dqkt.idqkt_r(dqkt_block)
+            idqkt_block = dqkt.idct2(dqkt_block)
             inv = idqkt_block
             for x in range(8):
                 for y in range(8):

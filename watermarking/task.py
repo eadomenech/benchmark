@@ -43,18 +43,24 @@ def mainTask():
                         ext = str(cover.cover_image).split('.')[-1]
                         filename = "%s.%s" % (uuid.uuid4(), ext)
                         watermarked_image = 'watermarked_images/'+filename
-                        subprocess.call(
+                        media = "media/"
+                        process = subprocess.Popen(
                             [
-                                'python media/' + str(watermarking.source_code) +
-                                ' -i media/' + str(cover.cover_image) +
-                                ' -w media/' + str(watermark.watermark_image) +
-                                ' -o media/' + watermarked_image],
-                            shell=True
+                                "python", media + str(watermarking.source_code),
+                                "-i", media + str(cover.cover_image),
+                                "-w", media + str(watermark.watermark_image),
+                                "-o", media + watermarked_image],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE
                         )
-                        s.watermarked_image = watermarked_image
-                        s.save()
-                        logger.info(
-                            'Updating watermarked_image of SprintWatermarking: %s' % (s.watermarked_image))
+                        output = process.communicate()
+                        if process.returncode == 0:
+                            s.watermarked_image = watermarked_image
+                            s.save()
+                            logger.info(
+                                'Updating watermarked_image of SprintWatermarking: %s' % (s.watermarked_image))
+                        else:
+                            logger.info(
+                                'Error in: %s' % (str(watermarking.source_code)))
                     except IntegrityError:
                         pass
                 sprint = get_object_or_404(
