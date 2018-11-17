@@ -5,9 +5,8 @@ import sys
 
 from PIL import Image
 import numpy as np
-# from transforms.DqKT import DqKT
+from transforms.Scipy_DCT import DCT
 # from transforms_gpgpu.dqkt_gpgpu import DqktGPGPU
-from transforms.MyDCT import DCT
 from transforms.DAT import DAT
 from block_tools.BlockTools import BlockTools
 from qr_tools.MyQR62 import MyQR62
@@ -49,10 +48,12 @@ def get_indice(m):
 
 def insert(cover_image, watermark_image):
     from image_tools.ImageTools import ImageTools
-    dqkt = DCT()
+    dct = DCT()
     myqr = MyQR62()
     dat = DAT()
     itools = ImageTools()
+
+    delta = 128
 
     c = [1, 19]
 
@@ -91,33 +92,51 @@ def insert(cover_image, watermark_image):
         # Simulando pwlcm para AG
         import random
         v = []
+
         cantidad = bt_of_cover.max_blocks()
+        x, y = cover_image.size
+        izq_min = x//64
+        der_max = (x//8 - x//64)
+        arr_min = y//64
+        aba_max = (y//8 - y//64)
+        mbf = x//8
+        mbc = y//8
         while len(v) < len_of_watermark:
             val = random.randrange(cantidad)
+            if val <= mbf:
+                fila = 0
+                columna = val - 1
+            else:
+                if val % float(mbf) == 0:
+                    fila = val//mbf - 1
+                else:
+                    fila = val//mbf
+            columna = val - fila*mbf - 1
             if val not in v:
-                v.append(val)
+                if columna > izq_min and columna < der_max and fila > arr_min and fila < aba_max:
+                    v.append(val)
 
         # Marcar los self.len_of_watermark bloques
         for i in range(len_of_watermark):
 
-            dqkt_block = dqkt.dct2(
+            dct_block = dct.dct2(
                 np.array(bt_of_cover.get_block(v[i]+1), dtype=np.float32))
 
             negative = False
-            if dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] < 0:
+            if dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] < 0:
                 negative = True
 
             if list_bit_of_watermark[i % len_of_watermark] == 0:
                 # Bit a insertar 0
-                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) - delta/2.0
+                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dct_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) - delta/2.0
             else:
                 # Bit a insertar 1
-                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) + delta/2.0
+                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dct_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) + delta/2.0
 
             if negative:
-                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] *= -1
-            idqkt_block = dqkt.idct2(dqkt_block)
-            inv = idqkt_block
+                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] *= -1
+            idct_block = dct.idct2(dct_block)
+            inv = idct_block
             for x in range(8):
                 for y in range(8):
                     if (inv[x, y] - int(inv[x, y])) < 0.5:
@@ -128,7 +147,7 @@ def insert(cover_image, watermark_image):
                         inv[x, y] = 255
                     if inv[x, y] < 0:
                         inv[x, y] = 0
-            bt_of_cover.set_block(idqkt_block, v[i]+1)
+            bt_of_cover.set_block(idct_block, v[i]+1)
 
         cover_marked_ycbcr_array = cover_ycbcr_array
 

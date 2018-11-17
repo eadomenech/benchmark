@@ -33,6 +33,9 @@ reportlab==3.5
 # Unir pdf
 PyPDF2
 
+# OpenCL
+# pyopencl
+
 # Pruebas unitarias
 #pytest < 3.3.0
 

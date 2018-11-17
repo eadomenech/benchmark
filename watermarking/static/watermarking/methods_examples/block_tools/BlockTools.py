@@ -100,5 +100,4 @@ class BlockTools:
             return np.array_split(x2D, x.size/(p*q), axis=0)
 
         else:
-            print "Invalid output order."
             return x
