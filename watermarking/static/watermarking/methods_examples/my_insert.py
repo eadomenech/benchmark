@@ -5,11 +5,14 @@ import sys
 
 from PIL import Image
 import numpy as np
-from transforms.Scipy_DCT import DCT
+from transforms.DqKT import DqKT
 # from transforms_gpgpu.dqkt_gpgpu import DqktGPGPU
 from transforms.DAT import DAT
 from block_tools.BlockTools import BlockTools
 from qr_tools.MyQR62 import MyQR62
+
+from scipy import misc
+import math
 
 
 def binary2int(binary):
@@ -30,7 +33,7 @@ def get_dwt(chromosome):
 
 def zigzag(n):
     indexorder = sorted(
-        ((x, y) for x in range(n) for y in range(n)), key=lambda x, y: (x+y, -y if (x+y) % 2 else y))
+        ((x, y) for x in range(n) for y in range(n)), key=lambda s: (s[0]+s[1], -s[1] if (s[0]+s[1]) % 2 else s[1]))
     return {index: n for n, index in enumerate(indexorder)}
 
 
@@ -46,9 +49,115 @@ def get_indice(m):
     return indice
 
 
+def mypwlcm(dic, valores):
+    '''
+    dic: diccionario compuesto por la semila y el valor de p
+    valores: lista de valores a tratar
+    '''
+    valores_finales = []
+    cantidad_valores = len(valores)
+    posiciones = orden(dic, cantidad_valores)
+    # print 'Posiciones: ', posiciones
+    posiciones_distintas = lista_valores_distintos(posiciones)
+    # print 'Posiciones distintas: ', posiciones_distintas
+    if len(posiciones_distintas) == len(posiciones):
+        v = []
+        for i in range(len(posiciones_distintas)):
+            v.append(valores[i])
+        return v
+    if len(posiciones_distintas) == 1:
+        return valores
+    for i in range(len(posiciones_distintas)):
+        valores_finales.append(valores[posiciones_distintas[i]])
+    posiciones_faltantes = lista_valores_faltantes(
+        posiciones_distintas, cantidad_valores)
+    # print 'Faltantes: ', posiciones_faltantes
+    if len(posiciones_faltantes) > 0:
+        v = []
+        for i in range(len(posiciones_faltantes)):
+            v.append(valores[posiciones_faltantes[i]])
+        valores_finales.extend(mypwlcm(dic, v))
+    return valores_finales
+
+
+def pwlcm(dic):
+    # dic: diccionario compuesto por la semila y el valor de p
+    if (dic['semilla'] >= 0) and (dic['semilla'] < dic['p']):
+        x = dic['semilla'] / dic['p']
+    elif (dic['semilla'] >= dic['p']) and (dic['semilla'] < 0.5):
+        x = (dic['semilla'] - dic['p']) / (0.5 - dic['p'])
+    elif (dic['semilla'] >= 0.5) and (dic['semilla'] < 1):
+        dic['semilla'] = 1 - dic['semilla']
+        x = pwlcm(dic)
+    return x
+
+
+def orden(dic, cant=40):
+    lista = []
+    for i in range(cant):
+        if i != 0:
+            dic_a = {}
+            dic_a['semilla'] = temp
+            dic_a['p'] = dic['p']
+            temp = pwlcm(dic_a)
+        else:
+            temp = pwlcm(dic)
+        lista.append(int(math.floor(math.fmod(temp * 10**14, cant))))
+    return lista
+
+
+def lista_valores_distintos(lista):
+    lista_nueva = []
+    for i in lista:
+        if i not in lista_nueva:
+            lista_nueva.append(i)
+    return lista_nueva
+
+
+def lista_valores_faltantes(posiciones_distintas, cantidad_valores):
+    posiciones_faltantes = []
+    for i in range(cantidad_valores):
+        if i not in posiciones_distintas:
+            posiciones_faltantes.append(i)
+    return posiciones_faltantes
+
+
+def mypwlcm_limit(dic, valores, limite):
+    '''
+    dic: diccionario compuesto por la semila y el valor de p
+    valores: lista de valores a tratar
+    '''
+    valores_finales = []
+    cantidad_valores = len(valores)
+    posiciones = orden(dic, cantidad_valores)
+    # print 'Posiciones: ', posiciones
+    posiciones_distintas = lista_valores_distintos(posiciones)
+    # print 'Posiciones distintas: ', posiciones_distintas
+    if len(valores_finales) > limite:
+        return valores_finales
+    if len(posiciones_distintas) == len(posiciones):
+        v = []
+        for i in range(len(posiciones_distintas)):
+            v.append(valores[i])
+        return v
+    if len(posiciones_distintas) == 1:
+        return valores
+    for i in range(len(posiciones_distintas)):
+        valores_finales.append(valores[posiciones_distintas[i]])
+    posiciones_faltantes = lista_valores_faltantes(
+        posiciones_distintas, cantidad_valores)
+    # print 'Faltantes: ', posiciones_faltantes
+    if len(posiciones_faltantes) > 0:
+        v = []
+        for i in range(len(posiciones_faltantes)):
+            v.append(valores[posiciones_faltantes[i]])
+        valores_finales.extend(mypwlcm_limit(dic, v, limite))
+    return valores_finales
+
+
 def insert(cover_image, watermark_image):
     from image_tools.ImageTools import ImageTools
-    dct = DCT()
+    dqkt = DqKT()
     myqr = MyQR62()
     dat = DAT()
     itools = ImageTools()
@@ -70,7 +179,7 @@ def insert(cover_image, watermark_image):
             watermark = dat.dat2(watermark)
 
         # obteniendo array de la watermark
-        watermark_array = np.asarray(watermark)  # Array of watermark
+        watermark_array = misc.fromimage(watermark)  # Array of watermark
 
         # Instance a la clase Bloque
         bt_of_cover = BlockTools(cover_array)
@@ -81,62 +190,37 @@ def insert(cover_image, watermark_image):
         # Datos de la watermark como lista
         list_bit_of_watermark = watermark_array.reshape((1, len_of_watermark))[0]
 
-        # # Utilizar Bloques segun key
-        # dic = {'semilla': 0.00325687, 'p': 0.22415897}
-        # valores = []
-        # cantidad = bt_of_cover.max_blocks()
-        # for i in range(cantidad):
-        #     valores.append(i)
-        # v = pwlcm.mypwlcm_limit(dic, valores, len_of_watermark)
-
-        # Simulando pwlcm para AG
-        import random
-        v = []
-
+        # Utilizar Bloques segun key
+        dic = {'semilla': 0.00325687, 'p': 0.22415897}
+        valores = []
         cantidad = bt_of_cover.max_blocks()
-        x, y = cover_image.size
-        izq_min = x//64
-        der_max = (x//8 - x//64)
-        arr_min = y//64
-        aba_max = (y//8 - y//64)
-        mbf = x//8
-        mbc = y//8
-        while len(v) < len_of_watermark:
-            val = random.randrange(cantidad)
-            if val <= mbf:
-                fila = 0
-                columna = val - 1
-            else:
-                if val % float(mbf) == 0:
-                    fila = val//mbf - 1
-                else:
-                    fila = val//mbf
-            columna = val - fila*mbf - 1
-            if val not in v:
-                if columna > izq_min and columna < der_max and fila > arr_min and fila < aba_max:
-                    v.append(val)
+        for i in range(cantidad):
+            valores.append(i)
+        v = mypwlcm_limit(dic, valores, len_of_watermark)
 
         # Marcar los self.len_of_watermark bloques
         for i in range(len_of_watermark):
 
-            dct_block = dct.dct2(
+            dqkt_block = dqkt.dqkt2(
                 np.array(bt_of_cover.get_block(v[i]+1), dtype=np.float32))
 
             negative = False
-            if dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] < 0:
+            if dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] < 0:
                 negative = True
 
             if list_bit_of_watermark[i % len_of_watermark] == 0:
                 # Bit a insertar 0
-                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dct_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) - delta/2.0
+                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) - delta/2.0
             else:
                 # Bit a insertar 1
-                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dct_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) + delta/2.0
+                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] = 2*delta*round(abs(dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]])/(2.0*delta)) + delta/2.0
 
             if negative:
-                dct_block[get_indice(c[1])[0], get_indice(c[1])[1]] *= -1
-            idct_block = dct.idct2(dct_block)
-            inv = idct_block
+                dqkt_block[get_indice(c[1])[0], get_indice(c[1])[1]] *= -1
+
+            idqkt_block = dqkt.idqkt2(dqkt_block)
+
+            inv = idqkt_block
             for x in range(8):
                 for y in range(8):
                     if (inv[x, y] - int(inv[x, y])) < 0.5:
@@ -147,14 +231,14 @@ def insert(cover_image, watermark_image):
                         inv[x, y] = 255
                     if inv[x, y] < 0:
                         inv[x, y] = 0
-            bt_of_cover.set_block(idct_block, v[i]+1)
+
+            bt_of_cover.set_block(idqkt_block, v[i]+1)
 
         cover_marked_ycbcr_array = cover_ycbcr_array
 
         image_rgb_array = itools.ycbcr2rgb(cover_marked_ycbcr_array)
-        watermarked_image_without_noise = misc.toimage(image_rgb_array)
 
-    return watermarked_image_without_noise
+    return misc.toimage(image_rgb_array)
 
 
 def main(args):
@@ -178,10 +262,10 @@ def main(args):
             output_filename = arg
 
     if input_filename and watermark_filename:
-        cover_image = Image.open(input_filename)
+        cover_image = Image.open(input_filename).convert('RGB')
         watermark_image = Image.open(watermark_filename)
         watermarked_image = insert(cover_image, watermark_image)
-        watermarked_image.save(output_filename, quality='keep')
+        watermarked_image.save(output_filename, quality=100)
 
     return 0
 

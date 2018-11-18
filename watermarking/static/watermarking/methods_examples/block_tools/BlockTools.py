@@ -33,7 +33,7 @@ class BlockTools:
     #  Obtener coordenadas correspondiente dado el número de bloque
     def get_coord(self, num_block):
         num_block -= 1
-        if num_block < self.max_blocks:
+        if num_block < self.max_blocks():
             lista = []
             x1 = (num_block // self.blocks_in_rows)*self.block_rows
             x2 = x1 + self.block_rows - 1
