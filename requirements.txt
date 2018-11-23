@@ -7,6 +7,10 @@ pillow==5.3
 # MatPlotLib
 matplotlib
 
+# OpenCV
+opencv-python
+opencv-contrib-python
+
 # Scipy
 scipy==1.1.0
 
