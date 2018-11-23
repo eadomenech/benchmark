@@ -52,11 +52,13 @@
               <table id="datatable-buttons" class="table table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>Name of method</th>
                     <th>Created at</th>
                     <th>Upload at</th>
                     <th>Paper</th>
-                    <th>Source code</th>
+                    <th>Insert source code</th>
+                    <th>Extract source code</th>
+                    <th>Description or abstract</th>
                   </tr>
                 </thead>
 
@@ -65,8 +67,22 @@
                     <td>{{ w.name }}</td>
                     <td>{{ w.created_at }}</td>
                     <td>{{ w.uploaded_at }}</td>
-                    <td>PDF</td>
-                    <td>{{ w.source_code }}</td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.paper }}" data-rel="tooltip" title="">
+                          <i> PDF </i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.source_code }}" data-rel="tooltip" title="">
+                          <i> {{ w.source_code }} </i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-xs" href="../media/{{ w.extract_code }}" data-rel="tooltip" title="">
+                          <i> {{ w.extract_code }} </i>
+                      </a>
+                    </td>
+                    <td>{{ w.description }}</td>
                 </tr>
                 {% endfor %}
               </table>

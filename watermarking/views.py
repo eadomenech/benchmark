@@ -212,7 +212,7 @@ class ListMetricSprintWatermarking(ListView):
     def get_queryset(self):
         """Return metric sprint."""
         return MetricSprintWatermarking.objects.all().order_by(
-            '-value', 'metric')
+            'metric', '-value')
 
 
 # Metric Sprint Watermarking Views

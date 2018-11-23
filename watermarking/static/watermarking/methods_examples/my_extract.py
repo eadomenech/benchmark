@@ -215,8 +215,12 @@ def extract(watermarked_filename):
     watermark_array_image = misc.toimage(array_extract_image)
     for i in range(10):
         watermark_array_image = dat.dat2(watermark_array_image)
-    array = misc.fromimage(watermark_array_image)
-    return misc.toimage(myqr.get_resconstructed(array))
+
+    b = BlockTools(misc.fromimage(watermark_array_image), 2, 2)
+    for m in range(1, b.max_blocks()+1):
+        b.set_color(m)
+
+    return misc.toimage(myqr.get_resconstructed(b.get()))
 
 
 def main(args):
