@@ -226,10 +226,10 @@ class ListNoiseSprintWatermarking(ListView):
 
 
 # Metric Noise Sprint Watermarking Views
-class ListMetricNoiseSprintWatermarking(ListView):
+class ListMetricNoiseSprintWatermarking(ListNoiseSprintWatermarking):
     template_name = 'watermarking/lists/list_MetricNoiseSprintWatermarking.html'
 
-    def get_queryset(self):
-        """Return MetricNoiseSprintWatermarking."""
-        return MetricNoiseSprintWatermarking.objects.all().order_by(
-            'noiseSprintWatermarking')
+    # def get_queryset(self):
+    #     """Return MetricNoiseSprintWatermarking."""
+    #     return MetricNoiseSprintWatermarking.objects.all().order_by(
+    #         'noiseSprintWatermarking')

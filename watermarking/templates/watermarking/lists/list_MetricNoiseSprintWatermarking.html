@@ -14,7 +14,11 @@
   <link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 
+
+
 {% block content %}
+  {% load watermarking_tags %}
+  {% metrics_watermark as metrics_watermark %}
   <div class="right_col" role="main">
     <div class="">
       <div class="page-title">
@@ -39,37 +43,40 @@
                     <th>Cover Image</th>
                     <th>Watermark Image</th>
                     <th>Noise</th>
+                    {% for m in metrics_watermark %}
+                        <th>{{m.name}}</th>
+                    {% endfor %}
                     <th>Watermark whit Noise</th>
-                    <th>Metric</th>
-                    <th>Value</th>
                   </tr>
                 </thead>
 
                 {% for w in object_list %}
                 <tr>
-                    <td>{{ w.noiseSprintWatermarking.sprintWatermarking.watermarking.name }}</td>
+                    <td>{{ w.sprintWatermarking.watermarking.name }}</td>
                     <td>
                       <a class="btn btn-xs" href="../media/{{ w.noiseSprintWatermarking.sprintWatermarking.cover_image.cover_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.noiseSprintWatermarking.sprintWatermarking.cover_image.name }} </i>
+                          <i> {{ w.sprintWatermarking.cover_image.name }} </i>
                       </a>
                     </td>
                     <td>
                       <a class="btn btn-xs" href="../media/{{ w.noiseSprintWatermarking.sprintWatermarking.watermark.watermark_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.noiseSprintWatermarking.sprintWatermarking.watermark.name }} </i>
+                          <i> {{ w.sprintWatermarking.watermark.name }} </i>
                       </a>
                     </td>
-                    <td>{{ w.noiseSprintWatermarking.noise.name }}</td>
+                    <td>{{ w.noise.name }}</td>
+                    {% metrics_watermark_of_noised w.id as metrics_watermark_of_noised %}
+                    {% for v in metrics_watermark_of_noised %}
+                        {% if v == -1 %}
+                            <td>{{v}}</td>
+                        {% else%}
+                            <td>{{ v }}</td>
+                        {% endif %}
+                    {% endfor %}
                     <td>
                       <a class="btn btn-xs" href="../media/{{ w.noiseSprintWatermarking.watermark_image_with_noise }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.noiseSprintWatermarking.watermark_image_with_noise }} </i>
+                          <i> {{ w.watermark_image_with_noise }} </i>
                       </a>
                     </td>
-                    <td>{{ w.metric.name }}</td>
-                    {% if w.value == -1 %}
-                        <td>Processing</td>
-                    {% else%}
-                        <td>{{ w.value }}</td>
-                    {% endif %}
                 </tr>
                 {% endfor %}
               </table>
