@@ -2,7 +2,8 @@
 # -*- coding:utf-8 -*-
 
 from django import template
-from watermarking.models import Metric, MetricNoiseSprintWatermarking
+from watermarking.models import (
+    Metric, MetricNoiseSprintWatermarking, MetricSprintWatermarking)
 
 register = template.Library()
 
@@ -15,6 +16,18 @@ def metrics_watermarked(context):
 @register.simple_tag(takes_context=True)
 def metrics_watermark(context):
     return Metric.objects.filter(metric_type="2")
+
+
+@register.simple_tag(takes_context=True)
+def metrics_watermarked_of_noised(context, sprint_id):
+    metrics = Metric.objects.filter(metric_type="1")
+    lista = []
+    for m in metrics:
+        lista.append(
+            MetricSprintWatermarking.objects.get(
+                metric=m, sprintWatermarking=sprint_id
+            ).value)
+    return lista
 
 
 @register.simple_tag(takes_context=True)
