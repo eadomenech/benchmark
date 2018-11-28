@@ -23,10 +23,12 @@ def metrics_watermarked_of_noised(context, sprint_id):
     metrics = Metric.objects.filter(metric_type="1")
     lista = []
     for m in metrics:
-        lista.append(
-            MetricSprintWatermarking.objects.get(
+        try:
+            lista.append(MetricSprintWatermarking.objects.get(
                 metric=m, sprintWatermarking=sprint_id
             ).value)
+        except:
+            lista.append(-1)
     return lista
 
 
@@ -35,8 +37,11 @@ def metrics_watermark_of_noised(context, noise_id):
     metrics = Metric.objects.filter(metric_type="2")
     lista = []
     for m in metrics:
-        lista.append(
-            MetricNoiseSprintWatermarking.objects.get(
-                metric=m, noiseSprintWatermarking=noise_id
-            ).value)
+        try:
+            lista.append(
+                MetricNoiseSprintWatermarking.objects.get(
+                    metric=m, noiseSprintWatermarking=noise_id
+                ).value)
+        except:
+            lista.append(-1)
     return lista

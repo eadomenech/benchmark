@@ -68,7 +68,7 @@
                     {% metrics_watermarked_of_noised w.sprintWatermarking.id as metrics_watermarked_of_noised %}
                     {% for v in metrics_watermarked_of_noised %}
                         {% if v == -1 %}
-                            <td>{{ v }}</td>
+                            <td>Processing</td>
                         {% else%}
                             <td>{{ v }}</td>
                         {% endif %}
