@@ -1,7 +1,8 @@
 # -*- encoding:utf-8 -*-
 # -*- coding:utf-8 -*-
 from django import forms
-from .models import Watermarking, CoverImage, WatermarkImage, Metric, Noise
+from .models import (
+    Watermarking, CoverImage, WatermarkImage, Metric, Noise, ImageType)
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
@@ -27,13 +28,13 @@ class WatermarkingForm(BtnsSubmitCancelMixing, forms.ModelForm):
 class CoverImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = CoverImage
-        fields = ['name', 'cover_image']
+        fields = ['name', 'cover_image', 'image_type']
 
 
 class WatermarkImageForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = WatermarkImage
-        fields = ['name', 'watermark_image']
+        fields = ['name', 'watermark_image', 'image_type']
 
 
 class MetricForm(BtnsSubmitCancelMixing, forms.ModelForm):
@@ -46,3 +47,9 @@ class NoiseForm(BtnsSubmitCancelMixing, forms.ModelForm):
     class Meta:
         model = Noise
         fields = ['name', 'source_code']
+
+
+class ImageTypeForm(BtnsSubmitCancelMixing, forms.ModelForm):
+    class Meta:
+        model = ImageType
+        fields = "__all__"

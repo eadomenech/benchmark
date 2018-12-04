@@ -55,4 +55,10 @@ urlpatterns = [
     path(
         'watermark_result', views.ListMetricNoiseSprintWatermarking.as_view(),
         name='watermark_result'),
+    path(
+        'imageTypes', views.ListImageType.as_view(),
+        name='imageTypes'),
+    path(
+        'newImageType', views.CreateImageType.as_view(),
+        name='newImageType'),
 ]

@@ -21,6 +21,14 @@
         <li><a>
           <i class="menu-icon">
           <img src="{% static 'core/images/datahiding_icono.png' %}" />
+        </i> Image Types <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'watermarking:imageTypes' %}">Image Types</a></li>
+          </ul>
+        </li>
+        <li><a>
+          <i class="menu-icon">
+          <img src="{% static 'core/images/datahiding_icono.png' %}" />
           </i> Cover Images <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'watermarking:coverImages' %}">Gallery</a></li>
