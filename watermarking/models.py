@@ -69,6 +69,9 @@ class CoverImageType(models.Model):
     cover_image = models.ForeignKey(CoverImage, on_delete=models.CASCADE)
     image_type = models.ForeignKey(ImageType, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.cover_image + '_' + self.image_type
+
 
 class WatermarkImage(models.Model):
     uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4)
@@ -85,6 +88,15 @@ class WatermarkImage(models.Model):
 
     def get_absolute_url(self):
         return reverse('watermarking:watermarkImage')
+
+
+class WatermarkImageType(models.Model):
+    watermark_image = models.ForeignKey(
+        WatermarkImage, on_delete=models.CASCADE)
+    image_type = models.ForeignKey(ImageType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.watermark_image + '_' + self.image_type
 
 
 class Noise(models.Model):
