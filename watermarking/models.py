@@ -43,6 +43,11 @@ class Watermarking(models.Model):
         return reverse('watermarking:methods')
 
 
+class ImageType(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    description = models.CharField(max_length=1000)
+
+
 class CoverImage(models.Model):
     uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4)
     name = models.CharField(max_length=128, unique=True)
@@ -58,6 +63,11 @@ class CoverImage(models.Model):
 
     def get_absolute_url(self):
         return reverse('watermarking:coverImage')
+
+
+class CoverImageType(models.Model):
+    cover_image = models.ForeignKey(CoverImage, on_delete=models.CASCADE)
+    image_type = models.ForeignKey(ImageType, on_delete=models.CASCADE)
 
 
 class WatermarkImage(models.Model):

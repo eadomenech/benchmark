@@ -1,6 +1,6 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
-  // Created: 2018-11-16 09:18
+  // Created: 2018-12-03 08:44
   // Cli Options: watermarking
 
   fontname = "Helvetica"
@@ -41,6 +41,14 @@ digraph model_graph {
     <FONT FACE="Helvetica ">created_at</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Helvetica ">DateField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Helvetica ">description</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Helvetica ">CharField</FONT>
     </TD></TR>
   
   
