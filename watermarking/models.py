@@ -14,6 +14,14 @@ from .helpers import (
     random_metric_code_name)
 
 
+class ImageType(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    description = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
+
+
 class Watermarking(models.Model):
     name = models.CharField(max_length=300, unique=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -41,14 +49,6 @@ class Watermarking(models.Model):
 
     def get_absolute_url(self):
         return reverse('watermarking:methods')
-
-
-class ImageType(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-    description = models.CharField(max_length=1000)
-
-    def __str__(self):
-        return self.name
 
 
 class CoverImage(models.Model):
