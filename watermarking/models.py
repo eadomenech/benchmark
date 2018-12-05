@@ -43,6 +43,14 @@ class Watermarking(models.Model):
         return reverse('watermarking:methods')
 
 
+class ImageType(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    description = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
+
+
 class CoverImage(models.Model):
     uuid = models.CharField(max_length=64, unique=True, default=uuid.uuid4)
     name = models.CharField(max_length=128, unique=True)
@@ -52,6 +60,7 @@ class CoverImage(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['jpg', 'bmp', 'png'],
             message="Please upload '.jpg', '.png' or '.bmp' files only.")])
+    image_type = models.ManyToManyField(ImageType)
 
     def __str__(self):
         return self.uuid
@@ -69,6 +78,7 @@ class WatermarkImage(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['png'],
             message="Please upload '.png' files only.")])
+    image_type = models.ManyToManyField(ImageType)
 
     def __str__(self):
         return self.uuid

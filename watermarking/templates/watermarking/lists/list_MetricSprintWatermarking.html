@@ -15,6 +15,8 @@
 {% endblock stylesheets %}
 
 {% block content %}
+  {% load watermarking_tags %}
+  {% metrics_watermarked as metrics_watermarked %}
   <div class="right_col" role="main">
     <div class="">
       <div class="page-title">
@@ -39,8 +41,9 @@
                     <th>Cover Image</th>
                     <th>Watermark Image</th>
                     <th>Watermarked Image</th>
-                    <th>Metric</th>
-                    <th>Value</th>
+                    {% for m in metrics_watermarked %}
+                        <th>{{m.name}}</th>
+                    {% endfor %}
                   </tr>
                 </thead>
 
@@ -62,12 +65,14 @@
                           <i> {{ w.sprintWatermarking.watermarked_image }} </i>
                       </a>
                     </td>
-                    <td>{{ w.metric.name }}</td>
-                    {% if w.value == -1 %}
-                        <td>Processing</td>
-                    {% else%}
-                        <td>{{ w.value }}</td>
-                    {% endif %}
+                    {% metrics_watermarked_of_noised w.sprintWatermarking.id as metrics_watermarked_of_noised %}
+                    {% for v in metrics_watermarked_of_noised %}
+                        {% if v == -1 %}
+                            <td>Processing</td>
+                        {% else%}
+                            <td>{{ v }}</td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
                 {% endfor %}
               </table>

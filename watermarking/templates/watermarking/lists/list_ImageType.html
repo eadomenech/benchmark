@@ -1,8 +1,8 @@
 {% extends 'core/base.html' %}
 
-{% block title %} Metric Watermark Sprints {% endblock title %}
+{% block title %} Image Types {% endblock title %}
 
-{% block header %} Metric Watermark Sprints {% endblock header %}
+{% block header %} Image Types {% endblock header %}
 
 {% block stylesheets %}
   {{ block.super }}
@@ -14,16 +14,12 @@
   <link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 
-
-
 {% block content %}
-  {% load watermarking_tags %}
-  {% metrics_watermark as metrics_watermark %}
   <div class="right_col" role="main">
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Metric Watermark Sprints</h3>
+          <h3>Image Types</h3>
         </div>
       </div>
 
@@ -34,49 +30,31 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
 
+            <div class="x_title">
+              <ul class="nav navbar-right panel_toolbox">
+                <li>
+                  <a class="btn btn-xs" href="{% url 'watermarking:newImageType' %}" data-rel="tooltip" data-original-title="New type" title="">
+                      <i class="ace-icon fa fa-plus bigger-120"> Add </i>
+                  </a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+
             <div class="x_content">
 
               <table id="datatable-buttons" class="table table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th>Method</th>
-                    <th>Cover Image</th>
-                    <th>Watermark Image</th>
-                    <th>Noise</th>
-                    {% for m in metrics_watermark %}
-                        <th>{{m.name}}</th>
-                    {% endfor %}
-                    <th>Watermark whit Noise</th>
+                    <th>Name</th>
+                    <th>Description</th>
                   </tr>
                 </thead>
 
-                {% for w in object_list %}
+                {% for n in object_list %}
                 <tr>
-                    <td>{{ w.sprintWatermarking.watermarking.name }}</td>
-                    <td>
-                      <a class="btn btn-xs" href="../media/{{ w.sprintWatermarking.cover_image.cover_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.sprintWatermarking.cover_image.name }} </i>
-                      </a>
-                    </td>
-                    <td>
-                      <a class="btn btn-xs" href="../media/{{ w.sprintWatermarking.watermark.watermark_image }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.sprintWatermarking.watermark.name }} </i>
-                      </a>
-                    </td>
-                    <td>{{ w.noise.name }}</td>
-                    {% metrics_watermark_of_noised w.id as metrics_watermark_of_noised %}
-                    {% for v in metrics_watermark_of_noised %}
-                        {% if v == -1 %}
-                            <td>{{v}}</td>
-                        {% else%}
-                            <td>{{ v }}</td>
-                        {% endif %}
-                    {% endfor %}
-                    <td>
-                      <a class="btn btn-xs" href="../media/{{ w.watermark_image_with_noise }}" data-rel="tooltip" data-original-title="New cover image" title="">
-                          <i> {{ w.watermark_image_with_noise }} </i>
-                      </a>
-                    </td>
+                    <td>{{ n.name }}</td>
+                    <td>{{ n.description }}</td>
                 </tr>
                 {% endfor %}
               </table>

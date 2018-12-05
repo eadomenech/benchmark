@@ -10,11 +10,11 @@ from django.views.generic.edit import (
 from .models import (
     Watermarking, CoverImage, WatermarkImage, Metric, Noise,
     SprintWatermarking, MetricSprintWatermarking, NoiseSprintWatermarking,
-    MetricNoiseSprintWatermarking)
+    MetricNoiseSprintWatermarking, ImageType)
 
 from .forms import (
     WatermarkingForm, CoverImageForm, WatermarkImageForm, MetricForm,
-    NoiseForm)
+    NoiseForm, ImageTypeForm)
 
 from .task import mainTask
 
@@ -226,10 +226,31 @@ class ListNoiseSprintWatermarking(ListView):
 
 
 # Metric Noise Sprint Watermarking Views
-class ListMetricNoiseSprintWatermarking(ListView):
+class ListMetricNoiseSprintWatermarking(ListNoiseSprintWatermarking):
     template_name = 'watermarking/lists/list_MetricNoiseSprintWatermarking.html'
 
+
+# Image Type Views
+class ListImageType(ListView):
+    template_name = 'watermarking/lists/list_ImageType.html'
+
     def get_queryset(self):
-        """Return MetricNoiseSprintWatermarking."""
-        return MetricNoiseSprintWatermarking.objects.all().order_by(
-            'noiseSprintWatermarking')
+        """Return image types."""
+        return ImageType.objects.all()
+
+
+class CreateImageType(FormActionMixin, CreateView):
+
+    model = ImageType
+    template_name = "watermarking/create/create_ImageType.html"
+    success_url = reverse_lazy("watermarking:imageTypes")
+    form_class = ImageTypeForm
+
+    def form_valid(self, form):
+        imageType = form.save(commit=False)
+        try:
+            imageType.save()
+            return super(CreateImageType, self).form_valid(form)
+        except Exception as e:
+            form.add_error(None, e)
+        return super(CreateImageType, self).form_invalid(form)
