@@ -14,6 +14,10 @@ opencv-contrib-python
 # Scipy
 scipy==1.1.0
 
+# OpenCV
+opencv-python
+opencv-contrib-python
+
 # Django
 Django==2.0
 
@@ -30,6 +34,9 @@ django-celery-beat
 
 # Extensions
 django-extensions
+
+# Imageio
+imageio
 
 #reportes pdf
 reportlab==3.5
