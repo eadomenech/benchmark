@@ -43,6 +43,9 @@ class Watermarking(models.Model):
             allowed_extensions=['py'],
             message="Please upload '.py' files only.")])
     description = models.CharField(max_length=1000)
+    cover_type = models.ManyToManyField(ImageType, related_name="cover_types")
+    watermark_type = models.ManyToManyField(
+        ImageType, related_name="watermark_types")
 
     def __str__(self):
         return self.name
@@ -117,6 +120,7 @@ class Metric(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['py'],
             message="Please upload '.py' files only.")])
+    image_type = models.ManyToManyField(ImageType)
 
     def __str__(self):
         return self.name
