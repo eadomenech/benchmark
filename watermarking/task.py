@@ -22,7 +22,7 @@ def mainTask():
     media = "media/"
     list_dir = [
         'media/watermarked_images/', 'media/noised_images/',
-        'media/watermarks_with_noise/']
+        'media/watermarks_with_noise/', 'media/source_codes/']
     for i in list_dir:
         try:
             os.stat(i)
