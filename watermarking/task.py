@@ -22,7 +22,7 @@ def mainTask():
     media = "media/"
     list_dir = [
         'media/watermarked_images/', 'media/noised_images/',
-        'media/watermarks_with_noise/']
+        'media/watermarks_with_noise/', 'media/source_codes/']
     for i in list_dir:
         try:
             os.stat(i)
@@ -30,8 +30,12 @@ def mainTask():
             logger.info('Creating %s' % (i))
             os.mkdir(i)
     for cover in CoverImage.objects.all():
+        cover_types = ImageType.objects.filter(coverimage=cover)
         for watermark in WatermarkImage.objects.all():
-            for watermarking in Watermarking.objects.all():
+            watermark_types = ImageType.objects.filter(watermarkimage=watermark)
+            for watermarking in Watermarking.objects.filter(
+                    cover_type__in=cover_types,
+                    watermark_type__in=watermark_types):
                 if not SprintWatermarking.objects.filter(
                         watermarking=watermarking.id, cover_image=cover,
                         watermark=watermark).exists():
@@ -119,7 +123,8 @@ def mainTask():
                             except IntegrityError:
                                 pass
                 # Calculando metricas a las watermarked images
-                for metric in Metric.objects.filter(metric_type='1'):
+                for metric in Metric.objects.filter(
+                        metric_type='1', image_type__in=cover_types):
                     if not MetricSprintWatermarking.objects.filter(
                             metric=metric, sprintWatermarking=sprint).exists():
                         if sprint.watermarked_image:
@@ -149,7 +154,8 @@ def mainTask():
 
     # Calculando metricas a las watermark images
     for noiseSprint in NoiseSprintWatermarking.objects.all():
-        for metric in Metric.objects.filter(metric_type='2'):
+        for metric in Metric.objects.filter(
+                metric_type='2', image_type__in=watermark_types):
             if noiseSprint.watermarked_image_with_noise and noiseSprint.watermark_image_with_noise:
                 if not MetricNoiseSprintWatermarking.objects.filter(
                         metric=metric,
