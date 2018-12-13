@@ -28,7 +28,7 @@ def metrics_watermarked_of_noised(context, sprint_id):
                 metric=m, sprintWatermarking=sprint_id
             ).value)
         except:
-            lista.append(-1)
+            lista.append(-3)
     return lista
 
 
@@ -43,5 +43,5 @@ def metrics_watermark_of_noised(context, noise_id):
                     metric=m, noiseSprintWatermarking=noise_id
                 ).value)
         except:
-            lista.append(-1)
+            lista.append(-3)
     return lista

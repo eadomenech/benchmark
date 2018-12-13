@@ -68,6 +68,8 @@
                     {% for v in metrics_watermark_of_noised %}
                         {% if v == -1 %}
                             <td>Processing</td>
+                        {% elif v == -3 %}
+                            <td>---</td>
                         {% else%}
                             <td>{{ v }}</td>
                         {% endif %}
